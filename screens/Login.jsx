@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Keyboard } from 'react-native';
+import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Keyboard, Button } from 'react-native';
 import logo from '../assets/icon.png';
 
-export default function Login({}) {
+export default function Login({ navigation }) {
 
     const [email, onEmailChange] = useState("");
     const [password, onPasswordChange] = useState("");
 
-    
+
     return (
         <View style={styles.container}>
 
@@ -35,14 +35,17 @@ export default function Login({}) {
                     />
 
                 </KeyboardAvoidingView>
-               
-                <TouchableOpacity>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                     <View style={styles.loginButton}><Text style={styles.loginTxt}>Login</Text></View>
                 </TouchableOpacity>
 
-
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
                     <View style={styles.signup}><Text style={styles.signupTxt}>Sign Up</Text></View>
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+                    <View style={styles.home}><Text style={styles.signupTxt}>Home</Text></View>
                 </TouchableOpacity>
 
             </View>
@@ -61,8 +64,8 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     logo: {
-        width: 90,
-        height: 41,
+        width: 45,
+        height: 45,
         marginTop: 20,
     },
     header: {
@@ -104,5 +107,12 @@ const styles = StyleSheet.create({
         fontFamily: 'semiBold',
         textAlign: 'center',
         fontSize: 18
+    },
+    home: {
+        width: '100%',
+        padding: 20,
+        backgroundColor: 'white',
+        borderRadius: 50,
+        marginTop: 20
     }
 });

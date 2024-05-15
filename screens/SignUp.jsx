@@ -3,13 +3,13 @@ import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, A
 import logo from '../assets/icon.png';
 
 
-export default function SignUp({}) {
+export default function SignUp({ navigation }) {
 
     const [username, onUsernameChange] = useState("");
     const [email, onEmailChange] = useState("");
     const [password, onPasswordChange] = useState("");
 
-    
+
     return (
         <View style={styles.container}>
             <View>
@@ -45,20 +45,18 @@ export default function SignUp({}) {
                     placeholderTextColor='#000'
                     secureTextEntry={true}
                 />
-                
-                
-                <TouchableOpacity >
+
+                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
                     <View style={styles.loginButton}><Text style={styles.loginTxt}>Sign Up</Text></View>
                 </TouchableOpacity>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
                     <View style={styles.signup}><Text style={styles.signupTxt}>Login</Text></View>
                 </TouchableOpacity>
 
             </View>
-
-
         </View>
+
     );
 }
 
@@ -73,8 +71,8 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     logo: {
-        width: 90,
-        height: 41,
+        width: 45,
+        height: 45,
         marginTop: 20,
     },
     header: {
@@ -116,5 +114,6 @@ const styles = StyleSheet.create({
         fontFamily: 'semiBold',
         textAlign: 'center',
         fontSize: 18
-    }
+    },
+
 });
