@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
-import logo from '../assets/icon.png';
+import splash from '../assets/splash.png';
 
 
 export default function SignUp({ navigation }) {
@@ -11,49 +11,51 @@ export default function SignUp({ navigation }) {
 
 
     return (
-        <View style={styles.container}>
-            <View>
-                <View style={styles.bigCircle}></View>
-                <View style={styles.smolCircle}></View>
-            </View>
+        <View style={styles.bodycontainer}>
 
-            <View style={styles.content}>
-                <Image source={logo} style={styles.logo} />
-                <Text style={styles.header}>Sign Up</Text>
+            <Image source={splash} style={styles.splash} />
 
-                <TextInput
-                    style={styles.input}
-                    value={username}
-                    onChangeText={onUsernameChange}
-                    placeholder='Username'
-                    placeholderTextColor='#000'
-                />
+            <View style={styles.container}>
 
-                <TextInput
-                    style={styles.input}
-                    value={email}
-                    onChangeText={onEmailChange}
-                    placeholder='Email'
-                    placeholderTextColor='#000'
-                />
 
-                <TextInput
-                    style={styles.input}
-                    value={password}
-                    onChangeText={onPasswordChange}
-                    placeholder='Password'
-                    placeholderTextColor='#000'
-                    secureTextEntry={true}
-                />
+                <View style={styles.content}>
 
-                <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                    <View style={styles.loginButton}><Text style={styles.loginTxt}>Sign Up</Text></View>
-                </TouchableOpacity>
+                    <Text style={styles.header}>Sign Up</Text>
 
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                    <View style={styles.signup}><Text style={styles.signupTxt}>Login</Text></View>
-                </TouchableOpacity>
+                    <TextInput
+                        style={styles.input}
+                        value={username}
+                        onChangeText={onUsernameChange}
+                        placeholder='Username'
+                        placeholderTextColor='#000'
+                    />
 
+                    <TextInput
+                        style={styles.input}
+                        value={email}
+                        onChangeText={onEmailChange}
+                        placeholder='Email'
+                        placeholderTextColor='#000'
+                    />
+
+                    <TextInput
+                        style={styles.input}
+                        value={password}
+                        onChangeText={onPasswordChange}
+                        placeholder='Password'
+                        placeholderTextColor='#000'
+                        secureTextEntry={true}
+                    />
+
+                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                        <View style={styles.loginButton}><Text style={styles.loginTxt}>Sign Up</Text></View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+                        <View style={styles.signup}><Text style={styles.signupTxt}>Login</Text></View>
+                    </TouchableOpacity>
+
+                </View>
             </View>
         </View>
 
@@ -63,33 +65,45 @@ export default function SignUp({ navigation }) {
 const styles = StyleSheet.create({
 
     container: {
-        flex: 1,
-        backgroundColor: 'white',
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column",
+        justifyContent: "center",
         width: '100%',
-        padding: 40
-    }, content: {
-        width: '100%',
+        height: "100%",
+        padding: 40,
     },
-    logo: {
-        width: 45,
-        height: 45,
-        marginTop: 20,
+    bodycontainer: {
+        display: "flex",
+        position: "relative",
+        width: '100%',
+        height: "100%",
+    },
+    splash: {
+        position: 'absolute',
+        width: "100%",
+        height: "100%",
+    },
+    content: {
+        width: '100%',
     },
     header: {
-        color: '#000000',
+        color: 'white',
         fontFamily: 'semiBold',
         fontSize: 30,
         marginTop: 100,
-        width: '80%'
+        width: 'auto',
+        textAlign: "center",
     },
     input: {
         borderBottomWidth: 1,
-        borderBottomColor: '#000',
+        borderBottomColor: 'white',
         marginTop: 30,
         width: '100%',
         padding: 10,
-        backgroundColor: 'white',
+        backgroundColor: 'none',
         fontSize: 15,
+        color: "white"
     }, loginButton: {
         width: '100%',
         padding: 20,

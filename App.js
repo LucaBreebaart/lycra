@@ -33,9 +33,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tab.Navigator>
+
+        <Tab.Screen name="Auth" component={AuthStackScreen} />
         <Tab.Screen name="Home" component={HomeScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
-        <Tab.Screen name="Auth" component={AuthStackScreen} />
+
       </Tab.Navigator>
     </NavigationContainer>
   );
