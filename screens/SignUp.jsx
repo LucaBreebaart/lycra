@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
-import splash from '../assets/splash.png';
+import splash from '../assets/bg-image.png';
 
 
 export default function SignUp({ navigation }) {
@@ -16,8 +16,6 @@ export default function SignUp({ navigation }) {
             <Image source={splash} style={styles.splash} />
 
             <View style={styles.container}>
-
-
                 <View style={styles.content}>
 
                     <Text style={styles.header}>Sign Up</Text>
@@ -27,7 +25,7 @@ export default function SignUp({ navigation }) {
                         value={username}
                         onChangeText={onUsernameChange}
                         placeholder='Username'
-                        placeholderTextColor='#000'
+                        placeholderTextColor='white'
                     />
 
                     <TextInput
@@ -35,7 +33,7 @@ export default function SignUp({ navigation }) {
                         value={email}
                         onChangeText={onEmailChange}
                         placeholder='Email'
-                        placeholderTextColor='#000'
+                        placeholderTextColor='white'
                     />
 
                     <TextInput
@@ -43,16 +41,12 @@ export default function SignUp({ navigation }) {
                         value={password}
                         onChangeText={onPasswordChange}
                         placeholder='Password'
-                        placeholderTextColor='#000'
+                        placeholderTextColor='white'
                         secureTextEntry={true}
                     />
 
                     <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
                         <View style={styles.loginButton}><Text style={styles.loginTxt}>Sign Up</Text></View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                        <View style={styles.signup}><Text style={styles.signupTxt}>Login</Text></View>
                     </TouchableOpacity>
 
                 </View>
@@ -68,10 +62,14 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         width: '100%',
         height: "100%",
-        padding: 40,
+        paddingLeft: 40,
+        paddingRight: 40,
+        marginTop: 240,
+        backgroundColor: "#133C2A",
+        borderRadius: 20,
     },
     bodycontainer: {
         display: "flex",
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'semiBold',
         fontSize: 30,
-        marginTop: 100,
+        marginTop: 40,
         width: 'auto',
         textAlign: "center",
     },
@@ -106,28 +104,16 @@ const styles = StyleSheet.create({
         color: "white"
     }, loginButton: {
         width: '100%',
-        padding: 20,
-        backgroundColor: 'green',
-        borderRadius: 50,
-        marginTop: 40
+        padding: 15,
+        backgroundColor: '#95B4A2',
+        borderRadius: 15,
+        marginTop: 50
     }, loginTxt: {
-        color: '#fff',
+        color: '#133C2A',
         fontFamily: 'semiBold',
+        fontWeight: "600",
         textAlign: 'center',
         fontSize: 18
-    }, signup: {
-        width: '100%',
-        padding: 20,
-        borderColor: 'green',
-        borderWidth: 2,
-        backgroundColor: 'white',
-        borderRadius: 50,
-        marginTop: 20
-    }, signupTxt: {
-        color: 'black',
-        fontFamily: 'semiBold',
-        textAlign: 'center',
-        fontSize: 18
-    },
+    }
 
 });

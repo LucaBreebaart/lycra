@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert, KeyboardAvoidingView, Keyboard, Button } from 'react-native';
-import splash from '../assets/splash.png';
+import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
+import splash from '../assets/bg-image.png';
 
 export default function Login({ navigation }) {
 
     const [email, onEmailChange] = useState("");
     const [password, onPasswordChange] = useState("");
-
 
     return (
 
@@ -17,22 +16,20 @@ export default function Login({ navigation }) {
 
                     <Text style={styles.header}>Welcome back</Text>
 
-                    <KeyboardAvoidingView
-                        behavior={Platform.OS === "ios" ? "padding" : "height"}
-                        style={styles.writeTaskWrapper}>
+                    <KeyboardAvoidingView>
                         <TextInput
                             style={styles.input}
                             value={email}
                             onChangeText={onEmailChange}
                             placeholder='Email'
-                            placeholderTextColor='#000'
+                            placeholderTextColor='white'
                         />
                         <TextInput
                             style={styles.input}
                             value={password}
                             onChangeText={onPasswordChange}
                             placeholder='Password'
-                            placeholderTextColor='#000'
+                            placeholderTextColor='white'
                             secureTextEntry={true}
                         />
 
@@ -58,10 +55,14 @@ const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         width: '100%',
         height: "100%",
-        padding: 40,
+        paddingLeft: 40,
+        paddingRight: 40,
+        marginTop: 240,
+        backgroundColor: "#133C2A",
+        borderRadius: 20,
     },
     bodycontainer: {
         display: "flex",
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontFamily: 'semiBold',
         fontSize: 30,
-        marginTop: 100,
+        marginTop: 40,
         width: 'auto',
         textAlign: "center",
     },
@@ -96,26 +97,27 @@ const styles = StyleSheet.create({
         color: "white"
     }, loginButton: {
         width: '100%',
-        padding: 20,
-        backgroundColor: 'green',
-        borderRadius: 50,
-        marginTop: 40
+        padding: 15,
+        backgroundColor: '#95B4A2',
+        borderRadius: 15,
+        marginTop: 50
     }, loginTxt: {
-        color: '#fff',
+        color: '#133C2A',
         fontFamily: 'semiBold',
+        fontWeight: "600",
         textAlign: 'center',
         fontSize: 18
     }, signup: {
         width: '100%',
-        padding: 20,
-        borderColor: 'green',
-        borderWidth: 2,
-        backgroundColor: 'white',
-        borderRadius: 50,
-        marginTop: 20
+        padding: 15,
+        borderColor: '#95B4A2',
+        borderWidth: 4,
+        borderRadius: 15,
+        marginTop: 30
     }, signupTxt: {
-        color: 'black',
+        color: 'white',
         fontFamily: 'semiBold',
+        fontWeight: "600",
         textAlign: 'center',
         fontSize: 18
     },

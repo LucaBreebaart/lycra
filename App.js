@@ -43,6 +43,7 @@ export default function App() {
   );
 }
 
+
 function AuthStackScreen() {
   return (
     <AuthStack.Navigator initialRouteName="Login">
@@ -51,6 +52,15 @@ function AuthStackScreen() {
     </AuthStack.Navigator>
   );
 }
+
+// function HomeNav() {
+//   return (
+//     <Tab.Navigator>
+//       <Tab.Screen name="Home" component={HomeScreen} />
+//       <Tab.Screen name="Profile" component={ProfileScreen} />
+//     </Tab.Navigator>
+//   );
+// }
 
 const styles = StyleSheet.create({
   container: {
