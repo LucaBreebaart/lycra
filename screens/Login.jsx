@@ -1,52 +1,63 @@
 import React, { useState } from 'react';
 import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
 import splash from '../assets/bg-image.png';
+import { firebase } from '../firebase';
+
+import { auth } from '../firebase'; // Adjust the import based on your file structure
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export default function Login({ navigation }) {
+  const [email, onEmailChange] = useState("");
+  const [password, onPasswordChange] = useState("");
 
-    const [email, onEmailChange] = useState("");
-    const [password, onPasswordChange] = useState("");
+  const handleLogin = () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed in 
+        var user = userCredential.user;
+        navigation.navigate('Home'); // Navigate to your home screen
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.error(errorCode, errorMessage);
+        // Handle Errors here.
+      });
+  };
 
-    return (
-
-        <View style={styles.bodycontainer}>
-            <Image source={splash} style={styles.splash} />
-            <View style={styles.container}>
-                <View style={styles.content}>
-
-                    <Text style={styles.header}>Welcome back</Text>
-
-                    <KeyboardAvoidingView>
-                        <TextInput
-                            style={styles.input}
-                            value={email}
-                            onChangeText={onEmailChange}
-                            placeholder='Email'
-                            placeholderTextColor='white'
-                        />
-                        <TextInput
-                            style={styles.input}
-                            value={password}
-                            onChangeText={onPasswordChange}
-                            placeholder='Password'
-                            placeholderTextColor='white'
-                            secureTextEntry={true}
-                        />
-
-                    </KeyboardAvoidingView>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                        <View style={styles.loginButton}><Text style={styles.loginTxt}>Login</Text></View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                        <View style={styles.signup}><Text style={styles.signupTxt}>Sign Up</Text></View>
-                    </TouchableOpacity>
-
-                </View>
-            </View>
+  return (
+    <View style={styles.bodycontainer}>
+      <Image source={splash} style={styles.splash} />
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.header}>Welcome back</Text>
+          <KeyboardAvoidingView>
+            <TextInput
+              style={styles.input}
+              value={email}
+              onChangeText={onEmailChange}
+              placeholder='Email'
+              placeholderTextColor='white'
+            />
+            <TextInput
+              style={styles.input}
+              value={password}
+              onChangeText={onPasswordChange}
+              placeholder='Password'
+              placeholderTextColor='white'
+              secureTextEntry={true}
+            />
+          </KeyboardAvoidingView>
+          <TouchableOpacity onPress={handleLogin}>
+            <View style={styles.loginButton}><Text style={styles.loginTxt}>Login</Text></View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+            <View style={styles.signup}><Text style={styles.signupTxt}>Sign Up</Text></View>
+          </TouchableOpacity>
         </View>
-    );
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

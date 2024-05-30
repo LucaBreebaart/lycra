@@ -1,59 +1,73 @@
 import React, { useState } from 'react';
 import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import splash from '../assets/bg-image.png';
+import { firebase } from '../firebase';
 
+import { auth } from '../firebase'; // Adjust the import based on your file structure
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 export default function SignUp({ navigation }) {
+  const [username, onUsernameChange] = useState("");
+  const [email, onEmailChange] = useState("");
+  const [password, onPasswordChange] = useState("");
 
-    const [username, onUsernameChange] = useState("");
-    const [email, onEmailChange] = useState("");
-    const [password, onPasswordChange] = useState("");
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        // Signed up 
+        var user = userCredential.user;
+        // Optionally update user profile with the username
+        updateProfile(user, {
+          displayName: username
+        }).then(() => {
+          navigation.navigate('Home'); // Navigate to your home screen
+        }).catch((error) => {
+          console.error(error);
+        });
+      })
+      .catch((error) => {
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.error(errorCode, errorMessage);
+        // Handle Errors here.
+      });
+  };
 
-
-    return (
-        <View style={styles.bodycontainer}>
-
-            <Image source={splash} style={styles.splash} />
-
-            <View style={styles.container}>
-                <View style={styles.content}>
-
-                    <Text style={styles.header}>Sign Up</Text>
-
-                    <TextInput
-                        style={styles.input}
-                        value={username}
-                        onChangeText={onUsernameChange}
-                        placeholder='Username'
-                        placeholderTextColor='white'
-                    />
-
-                    <TextInput
-                        style={styles.input}
-                        value={email}
-                        onChangeText={onEmailChange}
-                        placeholder='Email'
-                        placeholderTextColor='white'
-                    />
-
-                    <TextInput
-                        style={styles.input}
-                        value={password}
-                        onChangeText={onPasswordChange}
-                        placeholder='Password'
-                        placeholderTextColor='white'
-                        secureTextEntry={true}
-                    />
-
-                    <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
-                        <View style={styles.loginButton}><Text style={styles.loginTxt}>Sign Up</Text></View>
-                    </TouchableOpacity>
-
-                </View>
-            </View>
+  return (
+    <View style={styles.bodycontainer}>
+      <Image source={splash} style={styles.splash} />
+      <View style={styles.container}>
+        <View style={styles.content}>
+          <Text style={styles.header}>Sign Up</Text>
+          <TextInput
+            style={styles.input}
+            value={username}
+            onChangeText={onUsernameChange}
+            placeholder='Username'
+            placeholderTextColor='white'
+          />
+          <TextInput
+            style={styles.input}
+            value={email}
+            onChangeText={onEmailChange}
+            placeholder='Email'
+            placeholderTextColor='white'
+          />
+          <TextInput
+            style={styles.input}
+            value={password}
+            onChangeText={onPasswordChange}
+            placeholder='Password'
+            placeholderTextColor='white'
+            secureTextEntry={true}
+          />
+          <TouchableOpacity onPress={handleSignUp}>
+            <View style={styles.loginButton}><Text style={styles.loginTxt}>Sign Up</Text></View>
+          </TouchableOpacity>
         </View>
-
-    );
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
