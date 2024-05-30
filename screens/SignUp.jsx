@@ -1,36 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import splash from '../assets/bg-image.png';
-import { firebase } from '../firebase';
+import { handleRegister } from '../services/authService';
 
-import { auth } from '../firebase'; // Adjust the import based on your file structure
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 
 export default function SignUp({ navigation }) {
   const [username, onUsernameChange] = useState("");
   const [email, onEmailChange] = useState("");
   const [password, onPasswordChange] = useState("");
 
-  const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        // Signed up 
-        var user = userCredential.user;
-        // Optionally update user profile with the username
-        updateProfile(user, {
-          displayName: username
-        }).then(() => {
-          navigation.navigate('Home'); // Navigate to your home screen
-        }).catch((error) => {
-          console.error(error);
-        });
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-        console.error(errorCode, errorMessage);
-        // Handle Errors here.
-      });
+  const handleSignUp = async () => {
+    try {
+      const user = { username, email, password };
+      const success = await handleRegister(user);
+      
+    } catch (error) {
+      console.error("Error in handleSignUp:", error);
+      Alert.alert("Error", "An error occurred. Please try again.");
+    }
   };
 
   return (
@@ -72,62 +59,62 @@ export default function SignUp({ navigation }) {
 
 const styles = StyleSheet.create({
 
-    container: {
-        display: "flex",
-        alignItems: "center",
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        width: '100%',
-        height: "100%",
-        paddingLeft: 40,
-        paddingRight: 40,
-        marginTop: 240,
-        backgroundColor: "#133C2A",
-        borderRadius: 20,
-    },
-    bodycontainer: {
-        display: "flex",
-        position: "relative",
-        width: '100%',
-        height: "100%",
-    },
-    splash: {
-        position: 'absolute',
-        width: "100%",
-        height: "100%",
-    },
-    content: {
-        width: '100%',
-    },
-    header: {
-        color: 'white',
-        fontFamily: 'semiBold',
-        fontSize: 30,
-        marginTop: 40,
-        width: 'auto',
-        textAlign: "center",
-    },
-    input: {
-        borderBottomWidth: 1,
-        borderBottomColor: 'white',
-        marginTop: 30,
-        width: '100%',
-        padding: 10,
-        backgroundColor: 'none',
-        fontSize: 15,
-        color: "white"
-    }, loginButton: {
-        width: '100%',
-        padding: 15,
-        backgroundColor: '#95B4A2',
-        borderRadius: 15,
-        marginTop: 50
-    }, loginTxt: {
-        color: '#133C2A',
-        fontFamily: 'semiBold',
-        fontWeight: "600",
-        textAlign: 'center',
-        fontSize: 18
-    }
+  container: {
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    width: '100%',
+    height: "100%",
+    paddingLeft: 40,
+    paddingRight: 40,
+    marginTop: 240,
+    backgroundColor: "#133C2A",
+    borderRadius: 20,
+  },
+  bodycontainer: {
+    display: "flex",
+    position: "relative",
+    width: '100%',
+    height: "100%",
+  },
+  splash: {
+    position: 'absolute',
+    width: "100%",
+    height: "100%",
+  },
+  content: {
+    width: '100%',
+  },
+  header: {
+    color: 'white',
+    fontFamily: 'semiBold',
+    fontSize: 30,
+    marginTop: 40,
+    width: 'auto',
+    textAlign: "center",
+  },
+  input: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'white',
+    marginTop: 30,
+    width: '100%',
+    padding: 10,
+    backgroundColor: 'none',
+    fontSize: 15,
+    color: "white"
+  }, loginButton: {
+    width: '100%',
+    padding: 15,
+    backgroundColor: '#95B4A2',
+    borderRadius: 15,
+    marginTop: 50
+  }, loginTxt: {
+    color: '#133C2A',
+    fontFamily: 'semiBold',
+    fontWeight: "600",
+    textAlign: 'center',
+    fontSize: 18
+  }
 
 });
