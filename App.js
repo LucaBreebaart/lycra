@@ -13,7 +13,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './screens/homeScreen';
 import ProfileScreen from './screens/profileScreen';
-import CompetetionScreen from './screens/competetionScreen';
+import CompetitionScreen from './screens/competetionScreen';
+import CompetitionDetailScreen from './screens/competetionDetailScreen';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 
@@ -59,21 +60,18 @@ export default function App() {
 
     <NavigationContainer>
       {loggedIn ? (
-
         <Tab.Navigator >
-          <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }}/>
-          <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }}/>
-          <Tab.Screen name="Competetions" component={CompetetionScreen} options={{ headerShown: false }}/>
-          <Stack.Screen name="Add" component={CreateScreen} options={{ headerShown: false }}/>
+          <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+          <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+          <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Add" component={CreateScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Details" component={CompetitionDetailScreen} options={{ headerShown: false }} />
         </Tab.Navigator>
-
       ) : (
-
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>
-
       )}
     </NavigationContainer>
   );

@@ -6,7 +6,7 @@ import Feather from '@expo/vector-icons/Feather';
 import { getMyBucketList } from '../services/DbService';
 import { useFocusEffect } from '@react-navigation/native';
 
-function CompetetionScreen({ navigation }) {
+function CompetitionScreen({ navigation }) {
 
   const goToAdd = () => { navigation.navigate("Add") }
   const [bucketItems, setBucketItems] = useState([])
@@ -19,11 +19,11 @@ function CompetetionScreen({ navigation }) {
     }, [])
   )
 
-  const renderCompetetion = ({ item }) => (
+  const renderCompetition = ({ item }) => (
     <TouchableOpacity style={styles.card} onPress={() => {
       navigation.navigate("Details", {
-        CompetetionId: item.id,
-        CompetetionTitle: item.title,
+        CompetitionId: item.id,
+        CompetitionTitle: item.title,
       });
     }}>
       <Text style={styles.heading}>
@@ -62,7 +62,7 @@ function CompetetionScreen({ navigation }) {
 
         <FlatList
           data={bucketItems}
-          renderItem={renderCompetetion}
+          renderItem={renderCompetition}
           keyExtractor={item => item.id}
           onRefresh={handleGettingOfData}
           refreshing={refreshing}
@@ -73,7 +73,7 @@ function CompetetionScreen({ navigation }) {
   )
 }
 
-export default CompetetionScreen
+export default CompetitionScreen
 
 const styles = StyleSheet.create({
   container: {

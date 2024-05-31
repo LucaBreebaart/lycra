@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList } from 'react-native'
 import React, { useState } from 'react'
-import { createNewBucketItem } from '../services/DbService'
+import { createNewBucketItem, createNewHoleItem } from '../services/DbService'
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { Alert } from 'react-native';
@@ -10,31 +10,49 @@ const CreateScreen = ({ navigation }) => {
     const [title, setTitle] = useState('')
     const [date, setDate] = useState(new Date())
     const [time, setTime] = useState(new Date())
+    const [holes, setHoles] = useState([])
+    const [holeNumber, setHoleNumber] = useState('')
+    const [par, setPar] = useState('')
 
     const handleCreation = async () => {
         const combinedDateTime = new Date(date);
         combinedDateTime.setHours(time.getHours());
         combinedDateTime.setMinutes(time.getMinutes());
 
-        if (!title.trim() || !date || !time) {
+        if (!title.trim() || !date || !time || holes.length === 0) {
             Alert.alert("Validation Error", "Please enter all required fields.");
             return;
         }
 
         const formattedDateTime = format(combinedDateTime, 'EEEE, MMMM d, yyyy h:mm a');
 
-        const Competetion = {
+        const Competition = {
             title,
             date: formattedDateTime
         }
 
-        const success = await createNewBucketItem(Competetion)
+        const success = await createNewBucketItem(Competition)
 
         if (success) {
+            // Assuming createNewBucketItem returns the competition ID
+            const competitionId = success.id;
+            for (let hole of holes) {
+                await createNewHoleItem(competitionId, hole);
+            }
             navigation.goBack()
         } else {
-            console.error("Failed to create bucket list item")
+            console.error("Failed to create competition")
         }
+    }
+
+    const addHole = () => {
+        if (!holeNumber || !par) {
+            Alert.alert("Validation Error", "Please enter both hole number and par.");
+            return;
+        }
+        setHoles([...holes, { holeNumber, par }]);
+        setHoleNumber('');
+        setPar('');
     }
 
     const displayFormattedDateTime = format(date, 'EEEE, MMMM d, yyyy') + ' at ' + format(time, 'h:mm a');
@@ -42,10 +60,9 @@ const CreateScreen = ({ navigation }) => {
     return (
         <SafeAreaView>
             <View style={styles.container}>
-
                 <TextInput
                     style={styles.inputField}
-                    placeholder="Bucket List Title"
+                    placeholder="Competition Title"
                     onChangeText={newText => setTitle(newText)}
                     defaultValue={title}
                 />
@@ -80,10 +97,39 @@ const CreateScreen = ({ navigation }) => {
                     Selected Date and Time: {displayFormattedDateTime}
                 </Text>
 
-                <TouchableOpacity style={styles.button} onPress={handleCreation}>
-                    <Text style={styles.buttonText}>Create Bucket List Item</Text>
-                </TouchableOpacity>
+                <View style={styles.holeInputContainer}>
+                    <TextInput
+                        style={styles.holeInput}
+                        placeholder="Hole Number"
+                        keyboardType="numeric"
+                        onChangeText={setHoleNumber}
+                        value={holeNumber}
+                    />
+                    <TextInput
+                        style={styles.holeInput}
+                        placeholder="Par"
+                        keyboardType="numeric"
+                        onChangeText={setPar}
+                        value={par}
+                    />
+                    <TouchableOpacity style={styles.addButton} onPress={addHole}>
+                        <Text style={styles.addButtonText}>Add Hole</Text>
+                    </TouchableOpacity>
+                </View>
 
+                <FlatList
+                    data={holes}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.holeListItem}>
+                            <Text>Hole {item.holeNumber}: Par {item.par}</Text>
+                        </View>
+                    )}
+                />
+
+                <TouchableOpacity style={styles.button} onPress={handleCreation}>
+                    <Text style={styles.buttonText}>Create Competition</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
