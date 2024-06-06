@@ -56,3 +56,51 @@ export const getCompetitionHoles = async (competitionId) => {
 
     return allHoles;
 }
+
+// Function to join competition
+export const joinCompetition = async (competitionId, userId) => {
+    try {
+        const docRef = await addDoc(collection(db, "competitionParticipants"), {
+            competitionId,
+            userId
+        });
+        console.log("Participant added with ID: ", docRef.id);
+        return true;
+    } catch (e) {
+        console.error("Error adding participant: ", e);
+        return false;
+    }
+};
+
+// Fetch competition participants
+export const getCompetitionParticipants = async (competitionId) => {
+    try {
+        const q = query(collection(db, "competitionParticipants"), where("competitionId", "==", competitionId));
+        const querySnapshot = await getDocs(q);
+        const participants = [];
+        querySnapshot.forEach((doc) => {
+            participants.push(doc.data().userId);
+        });
+        return participants;
+    } catch (e) {
+        console.error("Error getting participants: ", e);
+        return [];
+    }
+};
+
+// Fetch user details
+export const getUserDetails = async (userId) => {
+    try {
+        const docRef = doc(db, "users", userId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return docSnap.data();
+        } else {
+            console.log("No such user!");
+            return null;
+        }
+    } catch (e) {
+        console.error("Error getting user details: ", e);
+        return null;
+    }
+};

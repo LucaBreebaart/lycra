@@ -22,12 +22,10 @@ import CreateScreen from './screens/CreateScreen';
 
 import * as Font from 'expo-font';
 
-
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
@@ -48,24 +46,32 @@ export default function App() {
   }, [])
 
   const [loggedIn, setLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setLoggedIn(!!user);
+      if (user) {
+        setLoggedIn(true);
+        setUserId(user.uid);
+      } else {
+        setLoggedIn(false);
+        setUserId(null);
+      }
     });
     return unsubscribe;
   }, []);
 
   return (
-
     <NavigationContainer>
       {loggedIn ? (
-        <Tab.Navigator >
+        <Tab.Navigator>
           <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
           <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
           <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />
           <Stack.Screen name="Add" component={CreateScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Details" component={CompetitionDetailScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Details" options={{ headerShown: false }}>
+            {(props) => <CompetitionDetailScreen {...props} userId={userId} />}
+          </Stack.Screen>
         </Tab.Navigator>
       ) : (
         <Stack.Navigator initialRouteName="Home">
