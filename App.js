@@ -9,7 +9,6 @@ import { StyleSheet, Text, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
 
 import HomeScreen from './screens/homeScreen';
 import ProfileScreen from './screens/profileScreen';
@@ -17,13 +16,21 @@ import CompetitionScreen from './screens/competetionScreen';
 import CompetitionDetailScreen from './screens/competetionDetailScreen';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
-
 import CreateScreen from './screens/CreateScreen';
 
 import * as Font from 'expo-font';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+
+const MainTabs = () => (
+  <Tab.Navigator>
+    <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Add" component={CreateScreen} options={{ headerShown: false }} />
+  </Tab.Navigator>
+);
 
 export default function App() {
   useEffect(() => {
@@ -38,12 +45,12 @@ export default function App() {
 
   useEffect(() => {
     const prepare = async () => {
-      await SplashScreen.preventAutoHideAsync()
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      await SplashScreen.hideAsync()
+      await SplashScreen.preventAutoHideAsync();
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      await SplashScreen.hideAsync();
     }
-    prepare()
-  }, [])
+    prepare();
+  }, []);
 
   const [loggedIn, setLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
@@ -64,17 +71,14 @@ export default function App() {
   return (
     <NavigationContainer>
       {loggedIn ? (
-        <Tab.Navigator>
-          <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-          <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-          <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Add" component={CreateScreen} options={{ headerShown: false }} />
+        <Stack.Navigator>
+          <Stack.Screen name="MainTabs" component={MainTabs} options={{ headerShown: false }} />
           <Stack.Screen name="Details" options={{ headerShown: false }}>
             {(props) => <CompetitionDetailScreen {...props} userId={userId} />}
           </Stack.Screen>
-        </Tab.Navigator>
+        </Stack.Navigator>
       ) : (
-        <Stack.Navigator initialRouteName="Home">
+        <Stack.Navigator initialRouteName="Login">
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="SignUp" component={SignUp} />
         </Stack.Navigator>

@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, FlatList, Button, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, FlatList, Button, ScrollView, LogBox } from 'react-native';
 import { getCompetitionDetails, getCompetitionHoles, joinCompetition, getCompetitionParticipants, getUserDetails } from '../services/DbService';
 import { auth } from '../firebase';
 import { Image } from 'expo-image';
+
+// Ignore specific warnings
+LogBox.ignoreLogs([
+    'VirtualizedLists should never be nested'
+]);
 
 const CompetitionDetailScreen = ({ route }) => {
     const { CompetitionId, CompetitionTitle } = route.params;
@@ -65,7 +70,7 @@ const CompetitionDetailScreen = ({ route }) => {
     }
 
     return (
-        <ScrollView>
+        <ScrollView style={{flex: 1}}>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerHeading}>{CompetitionTitle}</Text>
