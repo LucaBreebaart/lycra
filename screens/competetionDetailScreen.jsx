@@ -4,12 +4,9 @@ import { getCompetitionDetails, getCompetitionHoles, joinCompetition, getCompeti
 import { auth } from '../firebase';
 import { Image } from 'expo-image';
 
-// Ignore specific warnings
-LogBox.ignoreLogs([
-    'VirtualizedLists should never be nested'
-]);
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
-const CompetitionDetailScreen = ({ route }) => {
+const CompetitionDetailScreen = ({ route, navigation }) => {
     const { CompetitionId, CompetitionTitle } = route.params;
 
     const [competitionDetails, setCompetitionDetails] = useState({});
@@ -23,7 +20,7 @@ const CompetitionDetailScreen = ({ route }) => {
     useEffect(() => {
         const fetchDetails = async () => {
             setLoading(true);
-            setUserHasJoined(false); // Reset userHasJoined state
+            setUserHasJoined(false);
             const details = await getCompetitionDetails(CompetitionId);
             setCompetitionDetails(details);
             const holesData = await getCompetitionHoles(CompetitionId);
@@ -43,7 +40,6 @@ const CompetitionDetailScreen = ({ route }) => {
         fetchDetails();
 
         return () => {
-            // Cleanup before the component unmounts or re-renders for a new competition
             setCompetitionDetails({});
             setHoles([]);
             setParticipants([]);
@@ -61,6 +57,10 @@ const CompetitionDetailScreen = ({ route }) => {
         }
     };
 
+    const handlePlayCompetition = () => {
+        navigation.navigate('PlayCompetition', { CompetitionId, CompetitionTitle });
+    };
+
     if (loading) {
         return (
             <SafeAreaView style={styles.container}>
@@ -70,8 +70,9 @@ const CompetitionDetailScreen = ({ route }) => {
     }
 
     return (
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{ flex: 1 }}>
             <View style={styles.container}>
+
                 <View style={styles.header}>
                     <Text style={styles.headerHeading}>{CompetitionTitle}</Text>
                     <Text style={styles.headerSubHeading}>{competitionDetails.date}</Text>
@@ -122,6 +123,9 @@ const CompetitionDetailScreen = ({ route }) => {
                         )}
                     />
                 </View>
+                {userHasJoined && (
+                    <Button title="Play Competition" onPress={handlePlayCompetition} style={styles.holeText} />
+                )}
                 {!userHasJoined && (
                     <Button title="Join Competition" onPress={handleJoinCompetition} style={styles.holeText} />
                 )}

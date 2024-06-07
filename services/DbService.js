@@ -1,5 +1,5 @@
-import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc } from "firebase/firestore";
-import { db } from "../firebase";
+import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc, setDoc } from "firebase/firestore";
+import { db, auth } from "../firebase";  // Import auth from the Firebase configuration
 
 export const createNewBucketItem = async (Competition) => {
     try {
@@ -102,5 +102,18 @@ export const getUserDetails = async (userId) => {
     } catch (e) {
         console.error("Error getting user details: ", e);
         return null;
+    }
+};
+
+export const submitScores = async (competitionId, scores) => {
+    try {
+        const userId = auth.currentUser.uid;
+        const scoresRef = doc(collection(db, "competitionScores"), `${competitionId}_${userId}`);
+        await setDoc(scoresRef, { competitionId, userId, scores });
+        console.log("Scores submitted successfully");
+        return true;
+    } catch (e) {
+        console.error("Error submitting scores: ", e);
+        return false;
     }
 };
