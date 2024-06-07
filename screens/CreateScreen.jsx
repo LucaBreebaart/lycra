@@ -1,18 +1,19 @@
-import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList } from 'react-native'
-import React, { useState } from 'react'
-import { createNewBucketItem, createNewHoleItem } from '../services/DbService'
+import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList, Image } from 'react-native';
+import React, { useState } from 'react';
+import { createNewBucketItem, createNewHoleItem } from '../services/DbService';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { Alert } from 'react-native';
 
 const CreateScreen = ({ navigation }) => {
 
-    const [title, setTitle] = useState('')
-    const [date, setDate] = useState(new Date())
-    const [time, setTime] = useState(new Date())
-    const [holes, setHoles] = useState([])
-    const [holeNumber, setHoleNumber] = useState('')
-    const [par, setPar] = useState('')
+    const [title, setTitle] = useState('');
+    const [date, setDate] = useState(new Date());
+    const [time, setTime] = useState(new Date());
+    const [holes, setHoles] = useState([]);
+    const [holeNumber, setHoleNumber] = useState('');
+    const [par, setPar] = useState('');
+    const [holeImage, setHoleImage] = useState('https://www.rockyrivergolf.com/wp-content/uploads/sites/8088/2021/04/1.png');
 
     const handleCreation = async () => {
         const combinedDateTime = new Date(date);
@@ -29,31 +30,30 @@ const CreateScreen = ({ navigation }) => {
         const Competition = {
             title,
             date: formattedDateTime
-        }
+        };
 
-        const success = await createNewBucketItem(Competition)
+        const success = await createNewBucketItem(Competition);
 
         if (success) {
-            // Assuming createNewBucketItem returns the competition ID
             const competitionId = success.id;
             for (let hole of holes) {
                 await createNewHoleItem(competitionId, hole);
             }
-            navigation.goBack()
+            navigation.goBack();
         } else {
-            console.error("Failed to create competition")
+            console.error("Failed to create competition");
         }
-    }
+    };
 
     const addHole = () => {
         if (!holeNumber || !par) {
             Alert.alert("Validation Error", "Please enter both hole number and par.");
             return;
         }
-        setHoles([...holes, { holeNumber, par }]);
+        setHoles([...holes, { holeNumber, par, holeImage }]);
         setHoleNumber('');
         setPar('');
-    }
+    };
 
     const displayFormattedDateTime = format(date, 'EEEE, MMMM d, yyyy') + ' at ' + format(time, 'h:mm a');
 
@@ -123,6 +123,7 @@ const CreateScreen = ({ navigation }) => {
                     renderItem={({ item }) => (
                         <View style={styles.holeListItem}>
                             <Text>Hole {item.holeNumber}: Par {item.par}</Text>
+                            <Image source={{ uri: item.holeImage }} style={styles.holeImage} />
                         </View>
                     )}
                 />
@@ -132,10 +133,10 @@ const CreateScreen = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default CreateScreen
+export default CreateScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -165,5 +166,35 @@ const styles = StyleSheet.create({
         marginTop: 20,
         fontSize: 16,
         fontWeight: 'bold'
+    },
+    holeInputContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 20
+    },
+    holeInput: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        padding: 10,
+        width: '40%'
+    },
+    addButton: {
+        backgroundColor: 'blue',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 10
+    },
+    addButtonText: {
+        color: 'white'
+    },
+    holeListItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginTop: 10
+    },
+    holeImage: {
+        width: 50,
+        height: 50,
+        marginLeft: 10
     }
-})
+});

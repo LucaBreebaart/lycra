@@ -62,6 +62,7 @@ function CompetitionScreen({ navigation }) {
 
         <FlatList
           data={bucketItems}
+          vertical
           renderItem={renderCompetition}
           keyExtractor={item => item.id}
           onRefresh={handleGettingOfData}

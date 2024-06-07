@@ -1,5 +1,3 @@
-// CompetitionDetailScreen.jsx
-
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, FlatList, Button, ScrollView } from 'react-native';
 import { getCompetitionDetails, getCompetitionHoles, joinCompetition, getCompetitionParticipants, getUserDetails } from '../services/DbService';
@@ -19,6 +17,8 @@ const CompetitionDetailScreen = ({ route }) => {
 
     useEffect(() => {
         const fetchDetails = async () => {
+            setLoading(true);
+            setUserHasJoined(false); // Reset userHasJoined state
             const details = await getCompetitionDetails(CompetitionId);
             setCompetitionDetails(details);
             const holesData = await getCompetitionHoles(CompetitionId);
@@ -34,7 +34,17 @@ const CompetitionDetailScreen = ({ route }) => {
 
             setLoading(false);
         };
+
         fetchDetails();
+
+        return () => {
+            // Cleanup before the component unmounts or re-renders for a new competition
+            setCompetitionDetails({});
+            setHoles([]);
+            setParticipants([]);
+            setUserHasJoined(false);
+            setLoading(true);
+        };
     }, [CompetitionId]);
 
     const handleJoinCompetition = async () => {
@@ -55,8 +65,7 @@ const CompetitionDetailScreen = ({ route }) => {
     }
 
     return (
-        // <SafeAreaView >
-        <ScrollView >
+        <ScrollView>
             <View style={styles.container}>
                 <View style={styles.header}>
                     <Text style={styles.headerHeading}>{CompetitionTitle}</Text>
@@ -86,6 +95,12 @@ const CompetitionDetailScreen = ({ route }) => {
                         <View style={styles.holeItem}>
                             <Text style={styles.holeText}>Hole {item.holeNumber}:</Text>
                             <Text style={styles.holeText}>Par {item.par}</Text>
+                            <View style={styles.holeImageContainer}>
+                                <Image
+                                    source={{ uri: item.holeImage }}
+                                    style={styles.holeImage}
+                                    contentFit="contain" />
+                            </View>
                         </View>
                     )}
                 />
@@ -105,9 +120,8 @@ const CompetitionDetailScreen = ({ route }) => {
                 {!userHasJoined && (
                     <Button title="Join Competition" onPress={handleJoinCompetition} style={styles.holeText} />
                 )}
-            </View >
+            </View>
         </ScrollView>
-        // </SafeAreaView>
     );
 };
 
@@ -172,12 +186,14 @@ const styles = StyleSheet.create({
         paddingBottom: 15,
     },
     holeItem: {
+        position: 'relative',
         padding: 10,
         width: 200,
         height: 200,
         backgroundColor: "#D7E072",
         padding: 10,
         borderRadius: 12,
+        overflow: 'hidden',
     },
     holeText: {
         fontSize: 24,
@@ -196,6 +212,17 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
     },
+    holeImageContainer: {
+        position: 'absolute',
+        right: -25,
+        top: 40,
+        width: 185,
+    },
+    holeImage: {
+        top: 0,
+        width: "100%",
+        height: 425,
+    }
 });
 
 export default CompetitionDetailScreen;
