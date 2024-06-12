@@ -1,23 +1,25 @@
-// App.js
-
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { onAuthStateChanged } from 'firebase/auth';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { auth } from './firebase';
+
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import HomeScreen from './screens/homeScreen';
 import ProfileScreen from './screens/profileScreen';
 import CompetitionScreen from './screens/competetionScreen';
 import CompetitionDetailScreen from './screens/competetionDetailScreen';
+import CompetitionPlayScreen from './screens/CompetitionPlayScreen';
+import ScoreSummaryScreen from './screens/ScoreSummaryScreen';
 import Login from './screens/Login';
 import SignUp from './screens/SignUp';
 import CreateScreen from './screens/CreateScreen';
-import PlayCompetitionScreen from './screens/PlayCompetitionScreen';
-import ResultsScreen from './screens/ResultsScreen';
+
 import * as Font from 'expo-font';
 
 const Stack = createNativeStackNavigator();
@@ -39,6 +41,7 @@ export default function App() {
         Michroma: require('./assets/fonts/Michroma.ttf'),
       });
     };
+
     loadFonts();
   }, []);
 
@@ -75,8 +78,8 @@ export default function App() {
           <Stack.Screen name="Details" options={{ headerShown: false }}>
             {(props) => <CompetitionDetailScreen {...props} userId={userId} />}
           </Stack.Screen>
-          <Stack.Screen name="PlayCompetition" component={PlayCompetitionScreen} options={{ headerShown: false }} />
-          <Stack.Screen name="Results" component={ResultsScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="PlayCompetition" component={CompetitionPlayScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="ScoreSummary" component={ScoreSummaryScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator initialRouteName="Login">

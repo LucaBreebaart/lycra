@@ -1,5 +1,5 @@
-import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc, setDoc } from "firebase/firestore";
-import { db, auth } from "../firebase";  // Import auth from the Firebase configuration
+import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc, writeBatch } from "firebase/firestore";
+import { db } from "../firebase";
 
 export const createNewBucketItem = async (Competition) => {
     try {
@@ -57,6 +57,22 @@ export const getCompetitionHoles = async (competitionId) => {
     return allHoles;
 }
 
+export const getUserDetails = async (userId) => {
+    try {
+        const docRef = doc(db, "users", userId);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+            return docSnap.data();
+        } else {
+            console.log("No such user!");
+            return null;
+        }
+    } catch (e) {
+        console.error("Error getting user details: ", e);
+        return null;
+    }
+};
+
 // Function to join competition
 export const joinCompetition = async (competitionId, userId) => {
     try {
@@ -88,32 +104,23 @@ export const getCompetitionParticipants = async (competitionId) => {
     }
 };
 
-// Fetch user details
-export const getUserDetails = async (userId) => {
+export const submitScoresToDb = async (competitionId, userId, scores) => {
     try {
-        const docRef = doc(db, "users", userId);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-            return docSnap.data();
-        } else {
-            console.log("No such user!");
-            return null;
-        }
-    } catch (e) {
-        console.error("Error getting user details: ", e);
-        return null;
-    }
-};
-
-export const submitScores = async (competitionId, scores) => {
-    try {
-        const userId = auth.currentUser.uid;
-        const scoresRef = doc(collection(db, "competitionScores"), `${competitionId}_${userId}`);
-        await setDoc(scoresRef, { competitionId, userId, scores });
-        console.log("Scores submitted successfully");
+        const batch = writeBatch(db);
+        Object.keys(scores).forEach((holeNumber) => {
+            const scoreRef = doc(collection(db, "scores"));
+            batch.set(scoreRef, {
+                competitionId,
+                userId,
+                holeNumber: parseInt(holeNumber),
+                score: parseInt(scores[holeNumber])
+            });
+        });
+        await batch.commit();
+        console.log("All scores submitted successfully");
         return true;
     } catch (e) {
-        console.error("Error submitting scores: ", e);
+        console.error("Error submitting all scores: ", e);
         return false;
     }
 };

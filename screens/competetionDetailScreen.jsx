@@ -123,12 +123,15 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                         )}
                     />
                 </View>
+
                 {userHasJoined && (
-                    <Button title="Play Competition" onPress={handlePlayCompetition} style={styles.holeText} />
+                   <Button title="Play" onPress={() => navigation.navigate('PlayCompetition', { CompetitionId, userId: currentUser.uid })} />
                 )}
+
                 {!userHasJoined && (
                     <Button title="Join Competition" onPress={handleJoinCompetition} style={styles.holeText} />
                 )}
+                
             </View>
         </ScrollView>
     );
