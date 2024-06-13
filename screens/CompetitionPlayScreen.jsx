@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Button, TextInput, Image } from 'react-native';
 import { getCompetitionHoles } from '../services/DbService';
 
 const CompetitionPlayScreen = ({ route, navigation }) => {
@@ -26,7 +26,7 @@ const CompetitionPlayScreen = ({ route, navigation }) => {
         if (currentHoleIndex < holes.length - 1) {
             setCurrentHoleIndex(currentHoleIndex + 1);
         } else {
-           
+            // All holes completed, navigate to summary screen
             navigation.navigate('ScoreSummary', { competitionId: CompetitionId, userId, scores });
         }
     };
@@ -45,6 +45,10 @@ const CompetitionPlayScreen = ({ route, navigation }) => {
         <SafeAreaView style={styles.container}>
             <Text style={styles.header}>Hole {currentHole.holeNumber}</Text>
             <Text style={styles.subHeader}>Par {currentHole.par}</Text>
+            <Image
+                source={{ uri: currentHole.holeImage }}
+                style={styles.holeImage}
+                contentFit="fill" />
             <TextInput
                 style={styles.input}
                 placeholder="Enter your score"
@@ -79,6 +83,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         width: '80%',
     },
+    holeImage: {
+        width: 100,
+        height: 100,
+        // overflow: "visible",
+    }
 });
 
 export default CompetitionPlayScreen;

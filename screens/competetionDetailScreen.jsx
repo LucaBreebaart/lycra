@@ -57,10 +57,6 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
         }
     };
 
-    const handlePlayCompetition = () => {
-        navigation.navigate('PlayCompetition', { CompetitionId, CompetitionTitle });
-    };
-
     if (loading) {
         return (
             <SafeAreaView style={styles.container}>
