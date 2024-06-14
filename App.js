@@ -27,9 +27,10 @@ const Tab = createBottomTabNavigator();
 
 const MainTabs = () => (
   <Tab.Navigator>
+    <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />
+    
     <Tab.Screen name="Add" component={CreateScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
 );

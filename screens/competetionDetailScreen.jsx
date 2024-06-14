@@ -96,7 +96,7 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                     renderItem={({ item }) => (
                         <View style={styles.holeItem}>
                             <Text style={styles.holeText}>Hole {item.holeNumber}:</Text>
-                            <Text style={styles.holeText}>Par {item.par}</Text>
+                            <Text style={styles.holeText2}>Par {item.par}</Text>
                             <View style={styles.holeImageContainer}>
                                 <Image
                                     source={{ uri: item.holeImage }}
@@ -206,7 +206,13 @@ const styles = StyleSheet.create({
     holeText: {
         fontSize: 24,
         color: 'black',
-        fontFamily: "Inter"
+        fontFamily: "Michroma"
+    },
+    holeText2: {
+        fontSize: 24,
+        color: 'black',
+        fontFamily: "Inter",
+        fontWeight: '500',
     },
     participantsContainer: {
         marginTop: 20,
@@ -231,6 +237,7 @@ const styles = StyleSheet.create({
         width: "100%",
         height: 425,
     }
+    
 });
 
 export default CompetitionDetailScreen;
