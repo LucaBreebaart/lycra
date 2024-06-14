@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, FlatList, Button, ScrollView, LogBox } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, FlatList, Button, ScrollView, LogBox, TouchableOpacity } from 'react-native';
 import { getCompetitionDetails, getCompetitionHoles, joinCompetition, getCompetitionParticipants, getUserDetails } from '../services/DbService';
 import { auth } from '../firebase';
 import { Image } from 'expo-image';
+import LottieView from 'lottie-react-native';
 
 LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
@@ -59,77 +60,119 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
 
     if (loading) {
         return (
-            <SafeAreaView style={styles.container}>
-                <Text>Loading...</Text>
+            <SafeAreaView style={styles.loadingContainer}>
+                <View style={styles.animationContainer}>
+                    <LottieView
+                        style={styles.animationContainer}
+                        source={require('../assets/lottie/golf-animation.json')}
+                        autoPlay
+                        loop
+                    />
+                </View>
             </SafeAreaView>
         );
     }
 
     return (
-        <ScrollView style={{ flex: 1 }}>
-            <View style={styles.container}>
 
-                <View style={styles.header}>
-                    <Text style={styles.headerHeading}>{CompetitionTitle}</Text>
-                    <Text style={styles.headerSubHeading}>{competitionDetails.date}</Text>
-                </View>
+        <View style={{ flex: 1 }}>
+            <ScrollView style={{ flex: 1 }}>
+                <View style={styles.container}>
 
-                <View style={styles.imageContainer}>
-                    <Image
-                        style={styles.image}
-                        source={{ uri: "https://images.unsplash.com/photo-1632946269126-0f8edbe8b068?q=80&w=2031&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }}
-                    />
-                </View>
+                    <View style={styles.header}>
+                        <Text style={styles.headerHeading}>{CompetitionTitle}</Text>
+                        <Text style={styles.headerSubHeading}>{competitionDetails.date}</Text>
+                    </View>
 
-                <View style={styles.detailsContainer}>
-                    <Text style={styles.headerHeading}>Details</Text>
-                    <Text style={styles.headerSubHeading}>
-                        Nestled amidst the breathtaking vistas of British Columbia's Coast Mountains, Whistler Bike Park stands as a mecca for mountain biking enthusiasts worldwide. Renowned for its unparalleled terrain and adrenaline-pumping trails, this iconic destination beckons riders of all levels to experience the ultimate thrill on two wheels.
-                    </Text>
-                </View>
+                    <View style={styles.imageContainer}>
+                        <Image
+                            style={styles.image}
+                            source={{ uri: "https://images.unsplash.com/photo-1632946269126-0f8edbe8b068?q=80&w=2031&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }}
+                        />
+                    </View>
 
-                <FlatList
-                    contentContainerStyle={styles.holeContainer}
-                    horizontal
-                    data={holes}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.holeItem}>
-                            <Text style={styles.holeText}>Hole {item.holeNumber}:</Text>
-                            <Text style={styles.holeText2}>Par {item.par}</Text>
-                            <View style={styles.holeImageContainer}>
-                                <Image
-                                    source={{ uri: item.holeImage }}
-                                    style={styles.holeImage}
-                                    contentFit="contain" />
-                            </View>
-                        </View>
-                    )}
-                />
+                    <View style={styles.detailsContainer}>
+                        <Text style={styles.headerHeading}>Details</Text>
+                        <Text style={styles.headerSubHeading}>
+                            Nestled amidst the breathtaking vistas of British Columbia's Coast Mountains, Whistler Bike Park stands as a mecca for mountain biking enthusiasts worldwide. Renowned for its unparalleled terrain and adrenaline-pumping trails, this iconic destination beckons riders of all levels to experience the ultimate thrill on two wheels.
+                        </Text>
+                    </View>
 
-                <View style={styles.participantsContainer}>
-                    <Text style={styles.participantsTitle}>Participants:</Text>
                     <FlatList
-                        data={participants}
+                        contentContainerStyle={styles.holeContainer}
+                        horizontal
+                        data={holes}
                         keyExtractor={(item, index) => index.toString()}
                         renderItem={({ item }) => (
-                            <View style={styles.participantItem}>
-                                <Text>{item.username}</Text>
+                            <View style={styles.holeItem}>
+                                <Text style={styles.holeText}>Hole {item.holeNumber}:</Text>
+                                <Text style={styles.holeText2}>Par {item.par}</Text>
+                                <View style={styles.holeImageContainer}>
+                                    <Image
+                                        source={{ uri: item.holeImage }}
+                                        style={styles.holeImage}
+                                        contentFit="contain" />
+                                </View>
                             </View>
                         )}
                     />
+
+                    <View style={styles.participantsScoreContainer}>
+                        <Text style={styles.scoreTitle}>Leaderboard:</Text>
+
+                        <View style={styles.podiumContainer}>
+                            <View style={styles.podiumItem}>
+                                <Text style={styles.podiumText}>Name 2</Text>
+                                <View style={[styles.podiumBlock, styles.podiumSecond]} />
+                            </View>
+                            <View style={styles.podiumItem}>
+                                <Text style={styles.podiumText}>Name 1</Text>
+                                <View style={[styles.podiumBlock, styles.podiumFirst]} />
+                            </View>
+                            <View style={styles.podiumItem}>
+                                <Text style={styles.podiumText}>Name 3</Text>
+                                <View style={[styles.podiumBlock, styles.podiumThird]} />
+                            </View>
+                        </View>
+
+                        <View style={styles.scoreItem}>
+                            <Text style={styles.scoreparticipantName}>Names of winnnder 4-100</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.participantsContainer}>
+                        <Text style={styles.participantsTitle}>Participants:</Text>
+                        <FlatList
+                            data={participants}
+                            keyExtractor={(item, index) => index.toString()}
+                            renderItem={({ item }) => (
+                                <View style={styles.participantItem}>
+                                    <Text style={styles.participantName}>{item.username}</Text>
+                                </View>
+                            )}
+                        />
+                    </View>
+
                 </View>
 
-                {userHasJoined && (
-                   <Button title="Play" onPress={() => navigation.navigate('PlayCompetition', { CompetitionId, userId: currentUser.uid })} />
-                )}
+            </ScrollView>
 
-                {!userHasJoined && (
-                    <Button title="Join Competition" onPress={handleJoinCompetition} style={styles.holeText} />
-                )}
-                
+            <View style={styles.stickyButtonContainer}>
+                <TouchableOpacity style={styles.nextBtn} onPress={() => {
+                    if (userHasJoined) {
+                        navigation.navigate('PlayCompetition', { CompetitionId, userId: currentUser.uid });
+                    } else {
+                        handleJoinCompetition();
+                    }
+                }}>
+                    <Text style={styles.buttonText}>
+                        {userHasJoined ? "Play" : "Join Competition"}
+                    </Text>
+                </TouchableOpacity>
             </View>
-        </ScrollView>
+
+        </View>
+
     );
 };
 
@@ -139,7 +182,19 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         width: "100%",
         backgroundColor: '#F4FDFD',
+        paddingBottom: 60,
         gap: 10,
+    },
+    loadingContainer: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: "100%",
+        width: '100%',
+        backgroundColor: '#F4FDFD',
+    },
+    animationContainer: {
+        width: 200,
+        height: 200,
     },
     header: {
         width: '100%',
@@ -191,7 +246,6 @@ const styles = StyleSheet.create({
     },
     holeContainer: {
         gap: 10,
-        paddingBottom: 15,
     },
     holeItem: {
         position: 'relative',
@@ -199,7 +253,6 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         backgroundColor: "#D7E072",
-        padding: 10,
         borderRadius: 12,
         overflow: 'hidden',
     },
@@ -215,17 +268,117 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     participantsContainer: {
-        marginTop: 20,
+        width: '100%',
+        height: 'auto',
+        backgroundColor: '#246362',
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'left',
+        justifyContent: 'space-between',
+        gap: 10,
+        borderRadius: 12,
     },
     participantsTitle: {
-        fontSize: 20,
+        fontSize: 30,
         fontWeight: 'bold',
+        color: 'white',
+        fontFamily: 'Michroma',
     },
     participantItem: {
         padding: 10,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 8,
+        marginVertical: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
     },
+    participantName: {
+        fontSize: 18,
+        color: 'white',
+        fontFamily: 'Inter',
+        width: '100%',
+    },
+
+
+    // Poduimm 
+
+    participantsScoreContainer: {
+        width: '100%',
+        height: 'auto',
+        backgroundColor: '#246362',
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'space-between',
+        gap: 10,
+        borderRadius: 12,
+    },
+    scoreTitle: {
+        fontSize: 30,
+        fontWeight: 'bold',
+        color: 'white',
+        fontFamily: 'Michroma',
+    },
+    podiumContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'flex-end',
+        marginVertical: 20,
+        width: '100%',
+    },
+    podiumItem: {
+        alignItems: 'center',
+        marginHorizontal: 10,
+    },
+    podiumText: {
+        color: 'white',
+        fontSize: 18,
+        fontFamily: 'Inter',
+        marginBottom: 5,
+    },
+    podiumBlock: {
+        width: 80,
+        borderRadius: 10,
+    },
+    podiumFirst: {
+        height: 100,
+        backgroundColor: '#FFD700', // Gold
+    },
+    podiumSecond: {
+        height: 80,
+        backgroundColor: '#C0C0C0', // Silver
+    },
+    podiumThird: {
+        height: 60,
+        backgroundColor: '#CD7F32', // Bronze
+    },
+    scoreItem: {
+        padding: 10,
+        backgroundColor: 'transparent',
+        borderWidth: 1,
+        borderColor: 'white',
+        borderRadius: 8,
+        marginVertical: 5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        width: '100%',
+    },
+    scoreparticipantName: {
+        fontSize: 18,
+        color: 'white',
+        fontFamily: 'Inter',
+        width: '100%',
+    },
+
+    // Podium
+
     holeImageContainer: {
         position: 'absolute',
         right: -25,
@@ -236,8 +389,42 @@ const styles = StyleSheet.create({
         top: 0,
         width: "100%",
         height: 425,
-    }
-    
+    },
+
+    // Play button
+
+    stickyButtonContainer: {
+        position: 'absolute',
+        bottom: 20,
+        width: '100%',
+        padding: 10,
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    nextBtn: {
+        width: 250,
+        paddingVertical: 15,
+        paddingHorizontal: 30,
+        backgroundColor: '#246362',
+        borderRadius: 10,
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
+        shadowRadius: 20,
+        elevation: 5,
+        borderWidth: 2,
+        borderColor: 'white',
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 18,
+        fontFamily: 'Michroma',
+        textAlign: 'center',
+    },
+
 });
 
 export default CompetitionDetailScreen;

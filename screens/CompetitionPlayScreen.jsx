@@ -194,6 +194,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 20,
         elevation: 5,
+        borderWidth: 2,
+        borderColor: 'white',
     },
     buttonText: {
         color: '#FFFFFF',

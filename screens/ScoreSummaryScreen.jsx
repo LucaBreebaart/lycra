@@ -14,7 +14,7 @@ const ScoreSummaryScreen = ({ route, navigation }) => {
     const handleComplete = async () => {
         const success = await submitScoresToDb(competitionId, userId, scores);
         if (success) {
-            // navigation.navigate('CompetitionDetail', { CompetitionId: competitionId });
+            navigation.navigate('Details', { CompetitionId: competitionId });
         } else {
             alert('Failed to submit scores. Please try again.');
         }
