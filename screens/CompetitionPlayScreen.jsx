@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Button, Image, ImageBackground, TouchableOpacity } from 'react-native';
 import { getCompetitionHoles } from '../services/DbService';
 import Svg, { Path, Circle } from 'react-native-svg';
 
@@ -39,12 +39,17 @@ const CompetitionPlayScreen = ({ route, navigation }) => {
 
     if (!CompetitionId) {
         return (
-            <SafeAreaView style={styles.container}>
-                <Text>Please select a competition to play.</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Competitions')}>
-                    <Text style={styles.linkText}>Go to Competitions</Text>
-                </TouchableOpacity>
-            </SafeAreaView>
+            <ImageBackground
+                style={styles.noCompetitionsContainer}
+                source={{ uri: "https://images.unsplash.com/photo-1500932334442-8761ee4810a7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }}
+            >
+                <SafeAreaView style={styles.noCompetitionsContainer}>
+                    <Text style={styles.noCompetitionsMessage}>Please select a competition to play.</Text>
+                    <TouchableOpacity style={styles.noCompetitionsButton} onPress={() => navigation.navigate('Competitions')}>
+                        <Text style={styles.noCompetitionsButtonText}>Go to Competitions</Text>
+                    </TouchableOpacity>
+                </SafeAreaView>
+            </ImageBackground>
         );
     }
 
@@ -291,10 +296,33 @@ const styles = StyleSheet.create({
         height: 50,
         overflow: 'visible',
     },
-    linkText: { // Added style for link text
-        color: 'blue',
-        textDecorationLine: 'underline',
-        marginTop: 10,
+    noCompetitionsContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        height: '100%',
+        gap: 10,
+    },
+    noCompetitionsMessage: {
+        fontSize: 22,
+        marginBottom: 20,
+        textAlign: 'center',
+        fontFamily: 'Michroma',
+        color: 'white',
+        width: 300,
+    },
+    noCompetitionsButton: {
+        backgroundColor: '#246362',
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 8,
+    },
+    noCompetitionsButtonText: {
+        fontSize: 18,
+        color: 'white',
+        fontFamily: 'Inter',
+        textAlign: 'center',
     },
 });
 

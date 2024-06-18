@@ -145,7 +145,7 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                             <View style={styles.podiumContainer}>
                                 {leaderboard.length > 1 && (
                                     <View style={styles.podiumItem}>
-                                        <Text style={styles.podiumText}>{leaderboard[1].username}</Text>
+                                        <Text style={styles.podiumText}>{leaderboard[1].username} </Text>
                                         <View style={[styles.podiumBlock, styles.podiumSecond]} />
                                     </View>
                                 )}
@@ -185,6 +185,7 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                             renderItem={({ item }) => (
                                 <View style={styles.participantItem}>
                                     <Text style={styles.participantName}>{item.username}</Text>
+                                    {/* <Text style={styles.participantName}>{leaderboard.score}</Text> */}
                                 </View>
                             )}
                         />
@@ -337,6 +338,7 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between',
         width: '100%',
     },
     participantName: {

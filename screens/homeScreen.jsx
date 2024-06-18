@@ -408,7 +408,6 @@ function HomeScreen() {
                   height: '100%',
                 }}
               >
-
               </LinearGradient>
             </ImageBackground>
 

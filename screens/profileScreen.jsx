@@ -5,6 +5,8 @@ import { auth } from '../firebase';
 import { handleSignOut } from '../services/authService';
 import { getMyBucketList } from '../services/DbService'; // Import function to get joined competitions
 import Svg, { Rect, Path, Circle } from 'react-native-svg';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase'; // Make sure you have the correct path to your firebase config
 
 function ProfileScreen({ navigation }) {
   const [currentUser, setCurrentUser] = useState(null);
@@ -12,15 +14,24 @@ function ProfileScreen({ navigation }) {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    const user = auth.currentUser;
-    setCurrentUser(user);
-    fetchBucketItems(); // Fetch bucket items (competitions) when component mounts
+    const fetchUserData = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          setCurrentUser(userDoc.data());
+        }
+      }
+      fetchBucketItems();
+    };
+
+    fetchUserData();
   }, []);
 
   const fetchBucketItems = async () => {
     setRefreshing(true);
     try {
-      const allData = await getMyBucketList(); // Assuming this function fetches joined competitions
+      const allData = await getMyBucketList();
       setBucketItems(allData);
     } catch (error) {
       console.error('Error fetching bucket items:', error);
@@ -62,7 +73,7 @@ function ProfileScreen({ navigation }) {
 
         <Image
           style={styles.profileImage}
-          source={require('../assets/images/profile.jpg')}
+          source={require('../assets/images/profile2.jpg')}
         />
 
         <View style={styles.svgContainer}>
@@ -73,14 +84,14 @@ function ProfileScreen({ navigation }) {
 
           <View style={styles.nameContainer}>
             <Text style={styles.nameText}>Profile</Text>
-            
+
             {currentUser && (
               <View>
+                <Text>{currentUser.username}</Text>
                 <Text>{currentUser.email}</Text>
                 <Button title="Logout" onPress={handleLogout} />
               </View>
             )}
-
           </View>
 
         </View>
@@ -178,7 +189,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'green',
     top: 25,
     paddingHorizontal: 20,
-    display : 'flex',
+    display: 'flex',
     gap: 5,
   },
   nameText: {
@@ -228,7 +239,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     gap: 10,
-    // backgroundColor: 'grey'
   }
 
 });

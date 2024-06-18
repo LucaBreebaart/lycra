@@ -21,14 +21,38 @@ import SignUp from './screens/SignUp';
 import CreateScreen from './screens/CreateScreen';
 
 import * as Font from 'expo-font';
+import { Feather } from '@expo/vector-icons'; // Import Feather icons
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const MainTabs = () => (
-  <Tab.Navigator>
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ color, size }) => {
+        let iconName;
+
+        if (route.name === 'Home') {
+          iconName = 'home';
+        } else if (route.name === 'Competitions') {
+          iconName = 'list';
+        } else if (route.name === 'PlayCompetition') {
+          iconName = 'play-circle';
+        } else if (route.name === 'Profile') {
+          iconName = 'user';
+        }
+
+        return <Feather name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: '#246362',
+      tabBarInactiveTintColor: 'gray',
+      tabBarStyle: {
+        backgroundColor: '#f8f8f8', // Adjust the background color here
+      },
+    })}
+  >
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />   
+    <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />
     <Tab.Screen name="PlayCompetition" component={CompetitionPlayScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
