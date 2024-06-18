@@ -3,12 +3,12 @@ import React, { useEffect, useState } from 'react'
 import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
-import { getMyBucketList } from '../services/DbService';
+import { getMyCompetitionList } from '../services/DbService';
 import { useFocusEffect } from '@react-navigation/native';
 
 function CompetitionScreen({ navigation }) {
 
-  const [bucketItems, setBucketItems] = useState([])
+  const [CompetitionItems, setCompetitionItems] = useState([])
   const [refreshing, setRefreshing] = useState(false);
 
   useFocusEffect(
@@ -41,8 +41,8 @@ function CompetitionScreen({ navigation }) {
 
   const handleGettingOfData = async () => {
     setRefreshing(true);
-    const allData = await getMyBucketList()
-    setBucketItems(allData)
+    const allData = await getMyCompetitionList()
+    setCompetitionItems(allData)
     setRefreshing(false);
   }
 
@@ -55,7 +55,7 @@ function CompetitionScreen({ navigation }) {
         </View>
 
         <FlatList
-          data={bucketItems}
+          data={CompetitionItems}
           vertical
           renderItem={renderCompetition}
           keyExtractor={item => item.id}

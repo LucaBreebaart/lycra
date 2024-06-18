@@ -145,7 +145,7 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                             <View style={styles.podiumContainer}>
                                 {leaderboard.length > 1 && (
                                     <View style={styles.podiumItem}>
-                                        <Text style={styles.podiumText}>{leaderboard[1].username} </Text>
+                                        <Text style={styles.podiumText}>{leaderboard[1].username}</Text>
                                         <View style={[styles.podiumBlock, styles.podiumSecond]} />
                                     </View>
                                 )}

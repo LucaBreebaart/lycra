@@ -1,7 +1,7 @@
 import { collection, addDoc, getDocs, query, orderBy, where, doc, getDoc, writeBatch } from "firebase/firestore";
 import { db } from "../firebase";
 
-export const createNewBucketItem = async (Competition) => {
+export const createNewCompetitionItem = async (Competition) => {
     try {
         const docRef = await addDoc(collection(db, "Competition"), Competition);
         console.log("Document written with ID: ", docRef.id);
@@ -24,7 +24,7 @@ export const createNewHoleItem = async (competitionId, hole) => {
     }
 }
 
-export const getMyBucketList = async () => {
+export const getMyCompetitionList = async () => {
     var allCompetition = []
     var q = query(collection(db, "Competition"), orderBy("date"));
     const querySnapshot = await getDocs(q);

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList, Image } from 'react-native';
 import React, { useState } from 'react';
-import { createNewBucketItem, createNewHoleItem } from '../services/DbService';
+import { createNewCompetitionItem, createNewHoleItem } from '../services/DbService';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import { Alert } from 'react-native';
@@ -32,7 +32,7 @@ const CreateScreen = ({ navigation }) => {
             date: formattedDateTime
         };
 
-        const success = await createNewBucketItem(Competition);
+        const success = await createNewCompetitionItem(Competition);
 
         if (success) {
             const competitionId = success.id;

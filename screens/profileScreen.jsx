@@ -3,14 +3,14 @@ import { StyleSheet, View, Text, Pressable, Image, ScrollView, Button, FlatList,
 import { Feather } from '@expo/vector-icons'; // Import Feather icons if not already imported
 import { auth } from '../firebase';
 import { handleSignOut } from '../services/authService';
-import { getMyBucketList } from '../services/DbService'; // Import function to get joined competitions
+import { getMyCompetitionList } from '../services/DbService'; // Import function to get joined competitions
 import Svg, { Rect, Path, Circle } from 'react-native-svg';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase'; // Make sure you have the correct path to your firebase config
 
 function ProfileScreen({ navigation }) {
   const [currentUser, setCurrentUser] = useState(null);
-  const [bucketItems, setBucketItems] = useState([]);
+  const [CompetitionItems, setCompetitionItems] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
@@ -22,19 +22,19 @@ function ProfileScreen({ navigation }) {
           setCurrentUser(userDoc.data());
         }
       }
-      fetchBucketItems();
+      fetchCompetitionItems();
     };
 
     fetchUserData();
   }, []);
 
-  const fetchBucketItems = async () => {
+  const fetchCompetitionItems = async () => {
     setRefreshing(true);
     try {
-      const allData = await getMyBucketList();
-      setBucketItems(allData);
+      const allData = await getMyCompetitionList(); // Assuming this function fetches joined competitions
+      setCompetitionItems(allData);
     } catch (error) {
-      console.error('Error fetching bucket items:', error);
+      console.error('Error fetching Competition items:', error);
     } finally {
       setRefreshing(false);
     }
@@ -103,11 +103,11 @@ function ProfileScreen({ navigation }) {
           </Pressable>
 
           <FlatList
-            data={bucketItems}
+            data={CompetitionItems}
             vertical
             renderItem={renderCompetition}
             keyExtractor={item => item.id}
-            onRefresh={fetchBucketItems}
+            onRefresh={fetchCompetitionItems}
             refreshing={refreshing}
             ListEmptyComponent={<Text>No Competitions</Text>}
           />
