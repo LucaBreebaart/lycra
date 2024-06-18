@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Button, TextInput, Image, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Button, Image, TouchableOpacity } from 'react-native';
 import { getCompetitionHoles } from '../services/DbService';
-import Svg, { Rect, Path, Circle } from 'react-native-svg';
+import Svg, { Path, Circle } from 'react-native-svg';
 
 const CompetitionPlayScreen = ({ route, navigation }) => {
-    const { CompetitionId, userId } = route.params;
+    const { CompetitionId, userId } = route.params || {}; // Destructure route.params with default empty object
+
     const [holes, setHoles] = useState([]);
     const [currentHoleIndex, setCurrentHoleIndex] = useState(0);
     const [scores, setScores] = useState({});
@@ -12,6 +13,11 @@ const CompetitionPlayScreen = ({ route, navigation }) => {
 
     useEffect(() => {
         const fetchHoles = async () => {
+            if (!CompetitionId) {
+                setLoading(false); // Set loading to false immediately if CompetitionId is undefined or null
+                return; // Exit early if CompetitionId is not defined
+            }
+
             const holesData = await getCompetitionHoles(CompetitionId);
             setHoles(holesData);
             setLoading(false);
@@ -27,12 +33,22 @@ const CompetitionPlayScreen = ({ route, navigation }) => {
         if (currentHoleIndex < holes.length - 1) {
             setCurrentHoleIndex(currentHoleIndex + 1);
         } else {
-            // All holes completed, navigate to summary screen
             navigation.navigate('ScoreSummary', { competitionId: CompetitionId, userId, scores });
         }
     };
 
-    if (loading) {
+    if (!CompetitionId) {
+        return (
+            <SafeAreaView style={styles.container}>
+                <Text>Please select a competition to play.</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Competitions')}>
+                    <Text style={styles.linkText}>Go to Competitions</Text>
+                </TouchableOpacity>
+            </SafeAreaView>
+        );
+    }
+
+    if (loading || !holes || holes.length === 0 || currentHoleIndex >= holes.length) {
         return (
             <SafeAreaView style={styles.container}>
                 <Text>Loading...</Text>
@@ -128,6 +144,7 @@ const styles = StyleSheet.create({
         gap: 10,
         position: 'relative',
         alignItems: 'left',
+        top: 20,
     },
     header: {
         width: '100%',
@@ -165,7 +182,7 @@ const styles = StyleSheet.create({
     holeImage: {
         position: 'absolute',
         width: 200,
-        height: 720,
+        height: 650,
         overflow: "visible",
         bottom: 20,
         right: 20,
@@ -207,7 +224,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 40,
-        gap: 40,
+        gap: 20,
+        top: -20,
     },
     infoBox: {
         borderRadius: 16,
@@ -272,7 +290,12 @@ const styles = StyleSheet.create({
         width: 200,
         height: 50,
         overflow: 'visible',
-    }
+    },
+    linkText: { // Added style for link text
+        color: 'blue',
+        textDecorationLine: 'underline',
+        marginTop: 10,
+    },
 });
 
 export default CompetitionPlayScreen;

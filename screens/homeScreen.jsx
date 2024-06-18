@@ -260,7 +260,7 @@ function HomeScreen() {
                   />
                 </Svg>
 
-                <Text style={styles.imageDetailsText}>11 Holes</Text>
+                <Text style={styles.imageDetailsText}>13 Holes</Text>
 
                 <Svg width="30" height="30" viewBox="0 0 24 24" fill="none">
                   <Circle
@@ -676,7 +676,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     position: 'relative',
     width: '100%',
     height: 'auto',

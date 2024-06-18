@@ -31,6 +31,7 @@ const MainTabs = () => (
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Add" component={CreateScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="PlayCompetition" component={CompetitionPlayScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
 );
 
@@ -78,7 +79,6 @@ export default function App() {
           <Stack.Screen name="Details" options={{ headerShown: false }}>
             {(props) => <CompetitionDetailScreen {...props} userId={userId} />}
           </Stack.Screen>
-          <Stack.Screen name="PlayCompetition" component={CompetitionPlayScreen} options={{ headerShown: false }} />
           <Stack.Screen name="ScoreSummary" component={ScoreSummaryScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       ) : (

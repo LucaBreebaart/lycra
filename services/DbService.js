@@ -47,15 +47,25 @@ export const getCompetitionDetails = async (competitionId) => {
 }
 
 export const getCompetitionHoles = async (competitionId) => {
-    var allHoles = [];
-    var q = query(collection(db, "holes"), where("competitionId", "==", competitionId), orderBy("holeNumber"));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-        allHoles.push(doc.data());
-    });
+    try {
+        if (!competitionId) {
+            throw new Error("CompetitionId is undefined or null");
+        }
 
-    return allHoles;
+        var allHoles = [];
+        var q = query(collection(db, "holes"), where("competitionId", "==", competitionId), orderBy("holeNumber"));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            allHoles.push(doc.data());
+        });
+
+        return allHoles;
+    } catch (e) {
+        console.error("Error getting competition holes: ", e);
+        throw e; // Re-throw the error to be handled where the function is called
+    }
 }
+
 
 export const getUserDetails = async (userId) => {
     try {
@@ -104,6 +114,7 @@ export const getCompetitionParticipants = async (competitionId) => {
     }
 };
 
+// Submit scores to db
 export const submitScoresToDb = async (competitionId, userId, scores) => {
     try {
         const batch = writeBatch(db);
@@ -122,5 +133,21 @@ export const submitScoresToDb = async (competitionId, userId, scores) => {
     } catch (e) {
         console.error("Error submitting all scores: ", e);
         return false;
+    }
+};
+
+// Fetch scores for a specific competition
+export const getScoresForCompetition = async (competitionId) => {
+    try {
+        const q = query(collection(db, "scores"), where("competitionId", "==", competitionId));
+        const querySnapshot = await getDocs(q);
+        const scores = [];
+        querySnapshot.forEach((doc) => {
+            scores.push(doc.data());
+        });
+        return scores;
+    } catch (e) {
+        console.error("Error getting scores: ", e);
+        return [];
     }
 };

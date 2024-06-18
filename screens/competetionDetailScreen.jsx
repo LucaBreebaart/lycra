@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, FlatList, Button, ScrollView, LogBox, TouchableOpacity } from 'react-native';
-import { getCompetitionDetails, getCompetitionHoles, joinCompetition, getCompetitionParticipants, getUserDetails } from '../services/DbService';
+import { getCompetitionDetails, getCompetitionHoles, joinCompetition, getCompetitionParticipants, getUserDetails, getScoresForCompetition } from '../services/DbService';
 import { auth } from '../firebase';
 import { Image } from 'expo-image';
 import LottieView from 'lottie-react-native';
@@ -15,6 +15,7 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
     const [participants, setParticipants] = useState([]);
     const [userHasJoined, setUserHasJoined] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [leaderboard, setLeaderboard] = useState([]);
 
     const currentUser = auth.currentUser;
 
@@ -35,6 +36,11 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
             const participantsDetails = await Promise.all(participantIds.map(id => getUserDetails(id)));
             setParticipants(participantsDetails);
 
+            // Fetch scores and update leaderboard
+            const scores = await getScoresForCompetition(CompetitionId);
+            const participantScores = calculateParticipantScores(scores, participantsDetails);
+            setLeaderboard(participantScores);
+
             setLoading(false);
         };
 
@@ -48,6 +54,22 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
             setLoading(true);
         };
     }, [CompetitionId]);
+
+    const calculateParticipantScores = (scores, participants) => {
+        const scoreMap = {};
+
+        scores.forEach(({ userId, score }) => {
+            if (!scoreMap[userId]) {
+                scoreMap[userId] = 0;
+            }
+            scoreMap[userId] += score;
+        });
+
+        return participants.map(participant => ({
+            ...participant,
+            totalScore: scoreMap[participant.id] || 0
+        })).sort((a, b) => a.totalScore - b.totalScore);
+    };
 
     const handleJoinCompetition = async () => {
         const success = await joinCompetition(CompetitionId, currentUser.uid);
@@ -74,7 +96,6 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
     }
 
     return (
-
         <View style={{ flex: 1 }}>
             <ScrollView style={{ flex: 1 }}>
                 <View style={styles.container}>
@@ -121,23 +142,37 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                         <Text style={styles.scoreTitle}>Leaderboard:</Text>
 
                         <View style={styles.podiumContainer}>
-                            <View style={styles.podiumItem}>
-                                <Text style={styles.podiumText}>Name 2</Text>
-                                <View style={[styles.podiumBlock, styles.podiumSecond]} />
-                            </View>
-                            <View style={styles.podiumItem}>
-                                <Text style={styles.podiumText}>Name 1</Text>
-                                <View style={[styles.podiumBlock, styles.podiumFirst]} />
-                            </View>
-                            <View style={styles.podiumItem}>
-                                <Text style={styles.podiumText}>Name 3</Text>
-                                <View style={[styles.podiumBlock, styles.podiumThird]} />
-                            </View>
+                            {leaderboard.length > 1 && (
+                                <View style={styles.podiumItem}>
+                                    <Text style={styles.podiumText}>{leaderboard[1].username}</Text>
+                                    <View style={[styles.podiumBlock, styles.podiumSecond]} />
+                                </View>
+                            )}
+                            {leaderboard.length > 0 && (
+                                <View style={styles.podiumItem}>
+                                    <Text style={styles.podiumText}>{leaderboard[0].username}</Text>
+                                    <View style={[styles.podiumBlock, styles.podiumFirst]} />
+                                </View>
+                            )}
+                            {leaderboard.length > 2 && (
+                                <View style={styles.podiumItem}>
+                                    <Text style={styles.podiumText}>{leaderboard[2].username}</Text>
+                                    <View style={[styles.podiumBlock, styles.podiumThird]} />
+                                </View>
+                            )}
                         </View>
 
-                        <View style={styles.scoreItem}>
-                            <Text style={styles.scoreparticipantName}>Names of winnnder 4-100</Text>
-                        </View>
+                        {leaderboard.length > 3 && (
+                            <View style={styles.remainingParticipantsContainer}>
+                                {leaderboard.slice(3).map((participant, index) => (
+                                    <View key={index} style={styles.scoreItem}>
+                                        <Text style={styles.scoreparticipantName}>
+                                            {index + 4}. {participant.username}: {participant.totalScore}
+                                        </Text>
+                                    </View>
+                                ))}
+                            </View>
+                        )}
                     </View>
 
                     <View style={styles.participantsContainer}>
@@ -158,13 +193,18 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
             </ScrollView>
 
             <View style={styles.stickyButtonContainer}>
-                <TouchableOpacity style={styles.nextBtn} onPress={() => {
-                    if (userHasJoined) {
-                        navigation.navigate('PlayCompetition', { CompetitionId, userId: currentUser.uid });
-                    } else {
-                        handleJoinCompetition();
-                    }
-                }}>
+                <TouchableOpacity
+                    style={styles.nextBtn}
+                    onPress={() => {
+                        if (userHasJoined) {
+                            navigation.navigate('MainTabs', {
+                                screen: 'PlayCompetition',
+                                params: { CompetitionId, userId: currentUser.uid }
+                            });
+                        } else {
+                            handleJoinCompetition();
+                        }
+                    }}>
                     <Text style={styles.buttonText}>
                         {userHasJoined ? "Play" : "Join Competition"}
                     </Text>
@@ -172,7 +212,6 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
             </View>
 
         </View>
-
     );
 };
 
@@ -246,6 +285,7 @@ const styles = StyleSheet.create({
     },
     holeContainer: {
         gap: 10,
+        marginBottom: 10,
     },
     holeItem: {
         position: 'relative',
@@ -304,7 +344,6 @@ const styles = StyleSheet.create({
         width: '100%',
     },
 
-
     // Poduimm 
 
     participantsScoreContainer: {
@@ -319,6 +358,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         gap: 10,
         borderRadius: 12,
+        marginTop: -10,
     },
     scoreTitle: {
         fontSize: 30,
@@ -408,8 +448,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30,
         backgroundColor: '#246362',
         borderRadius: 10,
-        alignItems: 'center', 
-        justifyContent: 'center', 
+        alignItems: 'center',
+        justifyContent: 'center',
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,
