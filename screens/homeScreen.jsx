@@ -16,9 +16,6 @@ function HomeScreen() {
     setCurrentUser(user);
   }, []);
 
-  const handleLogout = () => {
-    handleSignOut();
-  };
 
   return (
     <ScrollView style={{ flex: 1 }}>
@@ -31,7 +28,6 @@ function HomeScreen() {
             {currentUser && (
               <View style={styles.userInfoContainer}>
                 <Text style={styles.userInfo}>{currentUser.email}</Text>
-                <Button title="Logout" onPress={handleLogout} />
               </View>
             )}
           </View>

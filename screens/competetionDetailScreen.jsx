@@ -137,43 +137,45 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                             </View>
                         )}
                     />
+                    
+                    {leaderboard.length > 0 && (
+                        <View style={styles.participantsScoreContainer}>
+                            <Text style={styles.scoreTitle}>Leaderboard:</Text>
 
-                    <View style={styles.participantsScoreContainer}>
-                        <Text style={styles.scoreTitle}>Leaderboard:</Text>
+                            <View style={styles.podiumContainer}>
+                                {leaderboard.length > 1 && (
+                                    <View style={styles.podiumItem}>
+                                        <Text style={styles.podiumText}>{leaderboard[1].username}</Text>
+                                        <View style={[styles.podiumBlock, styles.podiumSecond]} />
+                                    </View>
+                                )}
+                                {leaderboard.length > 0 && (
+                                    <View style={styles.podiumItem}>
+                                        <Text style={styles.podiumText}>{leaderboard[0].username}</Text>
+                                        <View style={[styles.podiumBlock, styles.podiumFirst]} />
+                                    </View>
+                                )}
+                                {leaderboard.length > 2 && (
+                                    <View style={styles.podiumItem}>
+                                        <Text style={styles.podiumText}>{leaderboard[2].username}</Text>
+                                        <View style={[styles.podiumBlock, styles.podiumThird]} />
+                                    </View>
+                                )}
+                            </View>
 
-                        <View style={styles.podiumContainer}>
-                            {leaderboard.length > 1 && (
-                                <View style={styles.podiumItem}>
-                                    <Text style={styles.podiumText}>{leaderboard[1].username}</Text>
-                                    <View style={[styles.podiumBlock, styles.podiumSecond]} />
-                                </View>
-                            )}
-                            {leaderboard.length > 0 && (
-                                <View style={styles.podiumItem}>
-                                    <Text style={styles.podiumText}>{leaderboard[0].username}</Text>
-                                    <View style={[styles.podiumBlock, styles.podiumFirst]} />
-                                </View>
-                            )}
-                            {leaderboard.length > 2 && (
-                                <View style={styles.podiumItem}>
-                                    <Text style={styles.podiumText}>{leaderboard[2].username}</Text>
-                                    <View style={[styles.podiumBlock, styles.podiumThird]} />
+                            {leaderboard.length > 3 && (
+                                <View style={styles.remainingParticipantsContainer}>
+                                    {leaderboard.slice(3).map((participant, index) => (
+                                        <View key={index} style={styles.scoreItem}>
+                                            <Text style={styles.scoreparticipantName}>
+                                                {index + 4}. {participant.username}: {participant.totalScore}
+                                            </Text>
+                                        </View>
+                                    ))}
                                 </View>
                             )}
                         </View>
-
-                        {leaderboard.length > 3 && (
-                            <View style={styles.remainingParticipantsContainer}>
-                                {leaderboard.slice(3).map((participant, index) => (
-                                    <View key={index} style={styles.scoreItem}>
-                                        <Text style={styles.scoreparticipantName}>
-                                            {index + 4}. {participant.username}: {participant.totalScore}
-                                        </Text>
-                                    </View>
-                                ))}
-                            </View>
-                        )}
-                    </View>
+                    )}
 
                     <View style={styles.participantsContainer}>
                         <Text style={styles.participantsTitle}>Participants:</Text>
@@ -221,7 +223,7 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         width: "100%",
         backgroundColor: '#F4FDFD',
-        paddingBottom: 60,
+        paddingBottom: 100,
         gap: 10,
     },
     loadingContainer: {

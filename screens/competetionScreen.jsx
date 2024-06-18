@@ -8,7 +8,6 @@ import { useFocusEffect } from '@react-navigation/native';
 
 function CompetitionScreen({ navigation }) {
 
-  const goToAdd = () => { navigation.navigate("Add") }
   const [bucketItems, setBucketItems] = useState([])
   const [refreshing, setRefreshing] = useState(false);
 
@@ -54,11 +53,6 @@ function CompetitionScreen({ navigation }) {
           <Text style={styles.headerHeading}>Competitions</Text>
           <Text style={styles.headerSubHeading}>[Entered Competitions]</Text>
         </View>
-
-        <Pressable style={styles.addButton} onPress={goToAdd}>
-          <Text style={styles.addButtonText}>Add</Text>
-          <Entypo name="bucket" size={16} color="green" />
-        </Pressable>
 
         <FlatList
           data={bucketItems}
@@ -141,20 +135,4 @@ const styles = StyleSheet.create({
     padding: 7,
     borderRadius: 100,
   },
-  addButton: {
-    backgroundColor: 'white',
-    borderColor: 'green',
-    borderWidth: 2,
-    padding: 10,
-    marginBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 5
-  },
-  addButtonText: {
-    textAlign: 'center',
-    color: 'green',
-    fontWeight: 'bold'
-  }
 })

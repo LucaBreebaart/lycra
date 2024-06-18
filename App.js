@@ -27,11 +27,10 @@ const Tab = createBottomTabNavigator();
 
 const MainTabs = () => (
   <Tab.Navigator>
-    <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />
     <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
-    <Tab.Screen name="Add" component={CreateScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Competitions" component={CompetitionScreen} options={{ headerShown: false }} />   
     <Tab.Screen name="PlayCompetition" component={CompetitionPlayScreen} options={{ headerShown: false }} />
+    <Tab.Screen name="Profile" component={ProfileScreen} options={{ headerShown: false }} />
   </Tab.Navigator>
 );
 
@@ -80,6 +79,7 @@ export default function App() {
             {(props) => <CompetitionDetailScreen {...props} userId={userId} />}
           </Stack.Screen>
           <Stack.Screen name="ScoreSummary" component={ScoreSummaryScreen} options={{ headerShown: false }} />
+          <Stack.Screen name="Add" component={CreateScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator initialRouteName="Login">
