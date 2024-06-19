@@ -182,7 +182,7 @@ The `Development Process` is the technical implementations and functionality don
 * Created `scorecard` feature to track and input golf scores.
 * Implemented `competition creation` and `participation` functionality.
 * Designed `leaderboard` to display rankings in real-time.
-* Utilized `React Navigation` for seamless page transitions.
+* Utilised `React Navigation` for seamless page transitions.
 * Employed `FlatList` for efficient rendering of score data.
 * Developed `profile management` allowing users to update their details.
 * Used `Expo` for running on both iOS and Android.
