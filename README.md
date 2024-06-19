@@ -13,7 +13,7 @@
 <p align="center">
 
   <a href="https://github.com/LucaBreebaart/lycra" >
-    <img  src="readmeAssets\logo.png" alt="Logo" width="140" height="140">
+    <img  src="readmeAssets/logo.png" alt="Logo" width="140" height="140">
   </a>
   
   <h3 align="center">L Y R C R A</h3>
@@ -69,7 +69,7 @@
 
 <!-- header image of project -->
 
-<img src="readmeAssets\thumbnail.png">
+<img src="readmeAssets/thumbnail.png">
 
 ### Project Description
 
@@ -245,7 +245,7 @@ Contributions are what makes the open-source community such an amazing place to 
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.\
+Distributed under the MIT License. See `LICENSE` for more information.
 
 <!-- LICENSE -->
 ## Contact
@@ -258,15 +258,15 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [image1]: /path/to/image.png
-[image2]: /readmeAssets\Join.jpg
-[image3]: /readmeAssets\scores.jpg
-[image4]: /readmeAssets\discover.jpg
-[image5]: /readmeAssets\moodboard.jpg
-[image6]: /readmeAssets\wireframes.jpg
+[image2]: /readmeAssets/Join.jpg
+[image3]: /readmeAssets/scores.jpg
+[image4]: /readmeAssets/discover.jpg
+[image5]: /readmeAssets/moodboard.jpg
+[image6]: /readmeAssets/wireframes.jpg
 [image7]: /path/to/image.png
 [image8]: /path/to/image.png
 [image9]: /path/to/image.png
-[image10]: /readmeAssets\mockup.jpg
+[image10]: /readmeAssets/mockup.jpg
 
 
 <!-- Refer to https://shields.io/ for more information and options about the shield links at the top of the ReadMe file -->
