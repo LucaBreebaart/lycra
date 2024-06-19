@@ -33,7 +33,6 @@
 
 ## Table of Contents
 
-
 - [About the Project](#about-the-project)
   - [Project Description](#project-description)
   - [Built With](#built-with)
@@ -44,24 +43,17 @@
 - [Concept Process](#concept-process)
   - [Ideation](#ideation)
   - [Wireframes](#wireframes)
-  - [User-flow](#user-flow)
 - [Development Process](#development-process)
   - [Implementation Process](#implementation-process)
     - [Highlights](#highlights)
-    - [Challenges](#challenges)
-  - [Reviews and Testing](#peer-reviews)
-    - [Feedback from Reviews](#feedback-from-reviews)
-    - [Unit Tests](#unit-tests)
   - [Future Implementation](#peer-reviews)
 - [Final Outcome](#final-outcome)
   - [Mockups](#mockups)
   - [Video Demonstration](#video-demonstration)
-- [Conclusion](#conclusion)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
-- [Acknowledgements](#acknowledgements)
 
 <!--PROJECT DESCRIPTION-->
 
@@ -186,26 +178,33 @@ The `Development Process` is the technical implementations and functionality don
 ### Implementation Process
 <!-- stipulate all of the functionality you included in the project -->
 
-* Made use of both `functionality` to implement a specific feature.
-* `MVC/MVVM` design architecture implemented.
-* `Plugin` for this.
-* ETC.
+* Developed `authentication` for user login and registration.
+* Created `scorecard` feature to track and input golf scores.
+* Implemented `competition creation` and `participation` functionality.
+* Designed `leaderboard` to display rankings in real-time.
+* Utilized `React Navigation` for seamless page transitions.
+* Employed `FlatList` for efficient rendering of score data.
+* Developed `profile management` allowing users to update their details.
+* Used `Expo` for running on both iOS and Android.
 
 #### Highlights
 <!-- stipulated the highlight you experienced with the project -->
-* Sunshine.
-* Rainbows.
+* Relationships through the database, and calculating final scores.
+* Using Firebase for authentication and data storage.
 
-#### Challenges
+#### Bugs
 <!-- stipulated the challenges you faced with the project and why you think you faced it or how you think you'll solve it (if not solved) -->
-* Bugs.
-* Bugs.
+* Sign up page sometimes crashes
+* Play competition page sometimes doesnt refresh
 
 ### Future Implementation
 <!-- stipulate functionality and improvements that can be implemented in the future. -->
 
-* Future 1.
-* Future 2.
+* Update the user profile page to show their current entered competitions
+* View user profiles and entered competitions
+* Serach funtionality
+* Can only play competitions on the selected date
+* Add more user info, such as a calculated handicap
 
 <!-- MOCKUPS -->
 ## Final Outcome
