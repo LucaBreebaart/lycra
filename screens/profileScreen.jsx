@@ -89,13 +89,12 @@ function ProfileScreen({ navigation }) {
           </Svg>
 
           <View style={styles.nameContainer}>
-            <Text style={styles.nameText}>Profile</Text>
 
             {currentUser && (
               <View>
-                <Text>{currentUser.username}</Text>
-                <Text>{currentUser.email}</Text>
-                <Button title="Logout" onPress={handleLogout} />
+                <Text style={styles.nameText}>{currentUser.username}</Text>
+                <Text style={styles.namesubText}>{currentUser.email}</Text>
+
               </View>
             )}
           </View>
@@ -104,9 +103,16 @@ function ProfileScreen({ navigation }) {
 
         <View style={styles.compContainer}>
 
-          <Pressable style={styles.addButton} onPress={goToAdd}>
-            <Text style={styles.addButtonText}>Add</Text>
-          </Pressable>
+          <View style={styles.buttonsContainer}>
+
+            <Pressable style={styles.logoutButton} onPress={handleLogout}>
+              <Text style={styles.logoutButtonText}>Logout</Text>
+            </Pressable>
+            
+            <Pressable style={styles.addButton} onPress={goToAdd}>
+              <Text style={styles.addButtonText}>Add</Text>
+            </Pressable>
+          </View>
 
           <FlatList
             data={CompetitionItems}
@@ -140,22 +146,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     color: "black"
-  },
-  addButton: {
-    backgroundColor: 'white',
-    borderColor: 'green',
-    borderWidth: 2,
-    padding: 10,
-    marginBottom: 20,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 5
-  },
-  addButtonText: {
-    textAlign: 'center',
-    color: 'green',
-    fontWeight: 'bold'
   },
   profileImage: {
     position: 'relative',
@@ -200,8 +190,13 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   nameText: {
-    color: 'white',
     fontSize: 26,
+    color: 'black',
+    fontFamily: 'Inter',
+    marginBottom: 10,
+  },
+  namesubText: {
+    fontSize: 18,
     color: 'black',
     fontFamily: 'Inter',
   },
@@ -238,14 +233,50 @@ const styles = StyleSheet.create({
   },
   compContainer: {
     width: '100%',
-    height: 'auto',
+    height: '100%',
     top: -140,
     paddingHorizontal: 20,
-    paddingVertical: 40,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
     gap: 10,
+  },
+  buttonsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    width: '100%',
+    justifyContent: 'space-between'
+  },
+  logoutButton: {
+    width: '50%',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    backgroundColor: '#246362',
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 5,
+    borderWidth: 2,
+    borderColor: 'white',
+  },
+  addButton: {
+    width: '50%',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#246362',
+  },
+  addButtonText: {
+    color: '#246362',
+    fontWeight: 'bold',
+  },
+  logoutButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
   }
 
 });
