@@ -1,4 +1,4 @@
-import { getAuth, createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth, db } from "../firebase";
 import { doc, setDoc } from "firebase/firestore";
 import { handleUploadOfImage } from './BucketService';
@@ -21,7 +21,7 @@ export const handleRegister = async ({ username, email, password, profilePhoto }
 
     return true;
   } catch (error) {
-    console.error("Error in handleRegister:", error.message);
+    // console.error("Error in handleRegister:", error.message);
     return false;
   }
 };
@@ -36,16 +36,17 @@ export const handleSignOut = () => {
     });
 };
 
-
 export const handlelogin = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-            const user = userCredential.user;
-            console.log("logged in user: " + user.email);
-        })
-        .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(errorMessage);
-        });
-}
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      console.log("Logged in user: " + user.email);
+      // Optionally navigate to another screen upon successful login
+      // navigation.navigate('HomeScreen');
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error(errorMessage);
+    });
+};

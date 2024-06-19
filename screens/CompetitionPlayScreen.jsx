@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     infoText: {
         color: '#FFFFFF',
         fontSize: 24,
-        textAlign: 'center',
+        textAlign: 'left',
         fontWeight: '500',
     },
     scoreContainer: {

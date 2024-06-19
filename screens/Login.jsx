@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native';
 import splash from '../assets/bg-image.png';
-import { auth, firebase } from '../firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { handlelogin } from '../services/authService';
 
 export default function Login({ navigation }) {
-  const [email, onEmailChange] = useState("");
-  const [password, onPasswordChange] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const login = () => {
     handlelogin(email, password);
@@ -23,14 +21,14 @@ export default function Login({ navigation }) {
             <TextInput
               style={styles.input}
               value={email}
-              onChangeText={onEmailChange}
+              onChangeText={setEmail}
               placeholder='Email'
               placeholderTextColor='white'
             />
             <TextInput
               style={styles.input}
               value={password}
-              onChangeText={onPasswordChange}
+              onChangeText={setPassword}
               placeholder='Password'
               placeholderTextColor='white'
               secureTextEntry={true}

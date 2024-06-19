@@ -37,7 +37,7 @@ function HomeScreen() {
   const fetchHomeCompetitions = async () => {
     setLoading(true);
     const allCompetitions = await getCompetitionList();
-    setHomeCompetitions(allCompetitions.slice(0, 3));
+    setHomeCompetitions(allCompetitions.slice(0, 4));
     setLoading(false);
   };
 
@@ -104,7 +104,7 @@ function HomeScreen() {
 
           {recommendedCompetitions.map((competition) => (
             <ImageBackground
-              key={competition.id} // Add this line
+              key={competition.id} 
               style={styles.image}
               source={{ uri: "https://images.unsplash.com/photo-1632946269126-0f8edbe8b068?q=80&w=2031&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }}
             >
