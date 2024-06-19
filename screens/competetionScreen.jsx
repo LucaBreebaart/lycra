@@ -18,6 +18,13 @@ function CompetitionScreen({ navigation }) {
     }, [])
   )
 
+  const handleGettingOfData = async () => {
+    setRefreshing(true);
+    const allData = await getCompetitionList()
+    setCompetitionItems(allData)
+    setRefreshing(false);
+  }
+  
   const renderCompetition = ({ item }) => (
     <TouchableOpacity style={styles.card} onPress={() => {
       navigation.navigate("Details", {
@@ -39,12 +46,6 @@ function CompetitionScreen({ navigation }) {
     </TouchableOpacity>
   );
 
-  const handleGettingOfData = async () => {
-    setRefreshing(true);
-    const allData = await getCompetitionList()
-    setCompetitionItems(allData)
-    setRefreshing(false);
-  }
 
   return (
     <ScrollView style={{ flex: 1 }}>

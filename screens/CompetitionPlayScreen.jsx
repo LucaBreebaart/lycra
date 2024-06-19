@@ -4,7 +4,7 @@ import { getCompetitionHoles } from '../services/DbService';
 import Svg, { Path, Circle } from 'react-native-svg';
 
 const CompetitionPlayScreen = ({ route, navigation }) => {
-    const { CompetitionId, userId } = route.params || {}; // Destructure route.params with default empty object
+    const { CompetitionId, userId } = route.params || {}; 
 
     const [holes, setHoles] = useState([]);
     const [currentHoleIndex, setCurrentHoleIndex] = useState(0);
@@ -14,8 +14,8 @@ const CompetitionPlayScreen = ({ route, navigation }) => {
     useEffect(() => {
         const fetchHoles = async () => {
             if (!CompetitionId) {
-                setLoading(false); // Set loading to false immediately if CompetitionId is undefined or null
-                return; // Exit early if CompetitionId is not defined
+                setLoading(false); 
+                return; 
             }
 
             const holesData = await getCompetitionHoles(CompetitionId);

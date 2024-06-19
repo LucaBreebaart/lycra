@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, Pressable, Image, ScrollView, Button, FlatList, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons'; // Import Feather icons if not already imported
+import { Feather } from '@expo/vector-icons';
 import { auth } from '../firebase';
 import { handleSignOut } from '../services/authService';
-import { getMyCompetitionList } from '../services/DbService'; // Import function to get joined competitions
+import { getCompetitionList } from '../services/DbService';
 import Svg, { Rect, Path, Circle } from 'react-native-svg';
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase'; // Make sure you have the correct path to your firebase config
+import { db } from '../firebase';
+import { useFocusEffect } from '@react-navigation/native';
+import { getUserDetails } from '../services/DbService';
 
 function ProfileScreen({ navigation }) {
+
   const [currentUser, setCurrentUser] = useState(null);
   const [CompetitionItems, setCompetitionItems] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -22,27 +25,28 @@ function ProfileScreen({ navigation }) {
           setCurrentUser(userDoc.data());
         }
       }
-      fetchCompetitionItems();
     };
-
     fetchUserData();
   }, []);
 
-  const fetchCompetitionItems = async () => {
+
+  const handleGettingOfData = async () => {
     setRefreshing(true);
-    try {
-      const allData = await getMyCompetitionList(); // Assuming this function fetches joined competitions
-      setCompetitionItems(allData);
-    } catch (error) {
-      console.error('Error fetching Competition items:', error);
-    } finally {
-      setRefreshing(false);
-    }
-  };
+    const allData = await getCompetitionList()
+    setCompetitionItems(allData)
+    setRefreshing(false);
+  }
 
   const handleLogout = () => {
     handleSignOut();
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      handleGettingOfData()
+      return () => { };
+    }, [])
+  )
 
   const renderCompetition = ({ item }) => (
     <TouchableOpacity style={styles.card} onPress={() => {
@@ -71,10 +75,12 @@ function ProfileScreen({ navigation }) {
     <ScrollView style={{ flex: 1 }}>
       <View style={styles.container}>
 
-        <Image
-          style={styles.profileImage}
-          source={require('../assets/images/profile2.jpg')}
-        />
+        {currentUser && (
+          <Image
+            style={styles.profileImage}
+            source={{ uri: currentUser.profilePhoto }}
+          />
+        )}
 
         <View style={styles.svgContainer}>
 
@@ -107,10 +113,11 @@ function ProfileScreen({ navigation }) {
             vertical
             renderItem={renderCompetition}
             keyExtractor={item => item.id}
-            onRefresh={fetchCompetitionItems}
+            onRefresh={handleGettingOfData}
             refreshing={refreshing}
             ListEmptyComponent={<Text>No Competitions</Text>}
           />
+
         </View>
 
       </View>

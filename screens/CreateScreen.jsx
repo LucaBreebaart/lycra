@@ -176,7 +176,8 @@ export default CreateScreen;
 
 const styles = StyleSheet.create({
     container: {
-        padding: 20
+        padding: 20,
+        height: 1100,
     },
     inputField: {
         borderWidth: 2,

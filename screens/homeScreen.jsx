@@ -1,6 +1,6 @@
 // HomeScreen.jsx
 
-import { StyleSheet, Text, View, Button, ScrollView, TextInput, Image, ImageBackground, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, ScrollView, TextInput, Image, ImageBackground, TouchableOpacity, SafeAreaView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { auth } from '../firebase';
 import { handleSignOut } from '../services/authService';
@@ -9,22 +9,36 @@ import Svg, { Rect, Path, Circle } from 'react-native-svg';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation } from '@react-navigation/native';
 import { getCompetitionList } from '../services/DbService';
+import { getUserDetails } from '../services/DbService';
+import LottieView from 'lottie-react-native';
 
 function HomeScreen() {
   const [currentUser, setCurrentUser] = useState(null);
+  const [userDetails, setUserDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [homeCompetitions, setHomeCompetitions] = useState([]);
+  const [recommendedCompetitions, setRecommendedCompetitions] = useState([]);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     const user = auth.currentUser;
     setCurrentUser(user);
+    if (user) {
+      fetchUserDetails(user.uid);
+    }
   }, []);
 
-  const [recommendedCompetitions, setRecommendedCompetitions] = useState([]);
-  const [homeCompetitions, setHomeCompetitions] = useState([]);
-  const navigation = useNavigation();
+  const fetchUserDetails = async (userId) => {
+    const details = await getUserDetails(userId);
+    setUserDetails(details);
+  };
 
   const fetchHomeCompetitions = async () => {
+    setLoading(true);
     const allCompetitions = await getCompetitionList();
     setHomeCompetitions(allCompetitions.slice(0, 3));
+    setLoading(false);
   };
 
   const fetchRecommendedCompetitions = async () => {
@@ -40,18 +54,30 @@ function HomeScreen() {
     fetchRecommendedCompetitions();
   }, []);
 
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <View style={styles.animationContainer}>
+          <LottieView
+            style={styles.animationContainer}
+            source={require('../assets/lottie/golf-animation.json')}
+            autoPlay
+            loop
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <ScrollView style={{ flex: 1 }}>
       <View style={styles.container}>
-
         <View style={styles.headerContainer}>
-
           <View style={styles.header}>
             <Text style={styles.headerHeading}>The Best Clubs and Competitions here</Text>
-            {currentUser && (
+            {currentUser && userDetails && (
               <View style={styles.userInfoContainer}>
-                <Text style={styles.userInfo}>{currentUser.email}</Text>
+                <Image source={{ uri: userDetails.profilePhoto }} style={styles.profilePhoto} />
               </View>
             )}
           </View>
@@ -78,10 +104,10 @@ function HomeScreen() {
 
           {recommendedCompetitions.map((competition) => (
             <ImageBackground
+              key={competition.id} // Add this line
               style={styles.image}
               source={{ uri: "https://images.unsplash.com/photo-1632946269126-0f8edbe8b068?q=80&w=2031&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" }}
             >
-
               <LinearGradient
                 colors={[
                   'rgba(0, 0, 0, 0.30)',
@@ -106,7 +132,7 @@ function HomeScreen() {
                     <Text style={styles.recommendedText}>Recommended</Text>
                   </View>
                   <Text style={styles.imageHeading}>{competition.title}</Text>
-                  {/* <TouchableOpacity
+                  <TouchableOpacity
                     key={competition.id}
                     style={styles.imageButton}
                     onPress={() => navigation.navigate("Details", {
@@ -130,7 +156,7 @@ function HomeScreen() {
                         fill="white"
                       />
                     </Svg>
-                  </TouchableOpacity> */}
+                  </TouchableOpacity>
 
                   <View style={styles.imageDetailsContainer}>
 
@@ -271,7 +297,7 @@ function HomeScreen() {
           <View>
 
             {homeCompetitions.map((competition) => (
-              <View>
+              <View key={competition.id}>
 
                 <View style={styles.discoverCourseContainer}>
 
@@ -634,6 +660,24 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 'auto',
     gap: 10,
+  },
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: "100%",
+    width: '100%',
+    backgroundColor: '#F4FDFD',
+  },
+  animationContainer: {
+    width: 200,
+    height: 200,
+  },
+  profilePhoto: {
+    width: 70,
+    height: 70,
+    borderColor: 'white',
+    borderWidth: 2,
+    borderRadius: 12,
   },
 
 });
