@@ -102,19 +102,30 @@ For development, the latest version of Visual Studio is required. The latest ver
     - Open Visual Studio
     - Click on `File` > `Open`
 
-3. Install packages
+3. Crate .env with your firebase config
+
+    ```sh 
+   FIREBASE_API_KEY=
+   FIREBASE_AUTH_DOMAIN=
+   FIREBASE_PROJECT_ID=
+   FIREBASE_STORAGE_BUCKET=
+   FIREBASE_MESSAGING_SENDER_ID=
+   FIREBASE_APP_ID=
+    ```
+
+4. Install packages
 
     ```sh
     npm install
     ```
 
-4. Run project
+5. Run project
 
     ```sh
-    expo start
+    npm start
     ```
 
-5. Download Expo Go
+6. Download Expo Go
 
     Download Expo Go on Android or iOS:
     - [iOS](https://apps.apple.com/us/app/expo-go/id982107779)
@@ -128,6 +139,8 @@ For development, the latest version of Visual Studio is required. The latest ver
 - **Joining**: Upon viewing and selecting a competition, users are directed to the competition details page.
 Here, they can join the competition if they haven't already.
 
+<br>
+
 ![image2][image2]
 
 ### Feature 2: Entering Scores
@@ -140,12 +153,16 @@ After entering scores, users are directed to the live leaderboard section.
 Here, they can see the progress of all participants in real-time.
 The leaderboard updates dynamically as scores are entered by other players.
 
+<br>
+
 ![image3][image3]
 
 ### Feature 3: Create and Manage Competitions
 
 - **Create New Competition**: Easily create new competitions by providing necessary details such as name, date, and other relevant information.
 - **Add Holes to Competitions**: Add individual holes to each competition, specifying details like hole number, par, images and distance.
+
+<br>
 
 ![image4][image4]
 
@@ -195,8 +212,6 @@ The `Development Process` is the technical implementations and functionality don
 
 ### Mockups
 
-![image9][image9]
-<br>
 ![image10][image10]
 
 <!-- VIDEO DEMONSTRATION -->
@@ -251,7 +266,7 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 [image7]: /path/to/image.png
 [image8]: /path/to/image.png
 [image9]: /path/to/image.png
-[image10]: /path/to/image.png
+[image10]: /readmeAssets\mockup.jpg
 
 
 <!-- Refer to https://shields.io/ for more information and options about the shield links at the top of the ReadMe file -->
