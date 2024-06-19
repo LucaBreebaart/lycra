@@ -73,9 +73,7 @@
 
 ### Project Description
 
-We presnt to you an amazing inventory managment website for skateboards that allows the user to store stock and create to create unique and custom skateboard configurations.
-The site features a fully functional inventory for each individual warehouse within the database as well as the ability to add, update, and delete items from the inventory.
-Designed to fit every skater the site comes styled in only the best choice of theme for every skateboarder, that good'ol Grungy Punk theme to take you back into every skate park and make you feel right at home.
+This project manages golf tournaments and enables competition participation via a mobile app. Users can enter tournaments, view golf course details, and use a digital scorecard. The app features a leaderboard to track progress and badges for competition achievements. Developed with Visual Studio and Expo using React Native, it ensures consistent performance on iOS and Android. The goal is to provide a practical platform for golf enthusiasts and organisers, promoting engagement and community involvement in golfing activities.
 
 ### Built With
 * [Visual Studio](https://visualstudio.microsoft.com/)
@@ -245,9 +243,9 @@ Distributed under the MIT License. See `LICENSE` for more information.\
 
 <!-- MARKDOWN LINKS & IMAGES -->
 [image1]: /path/to/image.png
-[image2]: /path/to/image.png
-[image3]: /path/to/image.png
-[image4]: /path/to/image.png
+[image2]: /readmeAssets\Join.jpg
+[image3]: /readmeAssets\scores.jpg
+[image4]: /readmeAssets\discover.jpg
 [image5]: /readmeAssets\moodboard.jpg
 [image6]: /readmeAssets\wireframes.jpg
 [image7]: /path/to/image.png
