@@ -65,7 +65,7 @@
 
 ### Project Description
 
-This project manages golf tournaments and enables competition participation via a mobile app. Users can enter tournaments, view golf course details, and use a digital scorecard. The app features a leaderboard to track progress and badges for competition achievements. Developed with Visual Studio and Expo using React Native, it ensures consistent performance on iOS and Android. The goal is to provide a practical platform for golf enthusiasts and organisers, promoting engagement and community involvement in golfing activities.
+This project manages golf tournaments and enables competition participation via a mobile app. Users can enter tournaments, view golf course details, and use a digital scorecard. The app features a leaderboard to track progress and asm well as a list of participants. Developed with Visual Studio and Expo using React Native, it ensures consistent performance on iOS and Android. The goal is to provide a practical platform for golf enthusiasts and organisers, promoting engagement and community involvement in golfing activities.
 
 ### Built With
 * [Visual Studio](https://visualstudio.microsoft.com/)
