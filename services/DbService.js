@@ -24,7 +24,7 @@ export const createNewHoleItem = async (competitionId, hole) => {
     }
 }
 
-export const getMyCompetitionList = async () => {
+export const getCompetitionList = async () => {
     var allCompetition = []
     var q = query(collection(db, "Competition"), orderBy("date"));
     const querySnapshot = await getDocs(q);

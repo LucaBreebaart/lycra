@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList, Image } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, TouchableOpacity, FlatList, Image, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 import { createNewCompetitionItem, createNewHoleItem } from '../services/DbService';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -6,33 +6,37 @@ import { format } from 'date-fns';
 import { Alert } from 'react-native';
 
 const CreateScreen = ({ navigation }) => {
-
     const [title, setTitle] = useState('');
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
     const [holes, setHoles] = useState([]);
     const [holeNumber, setHoleNumber] = useState('');
     const [par, setPar] = useState('');
-    const [holeImage, setHoleImage] = useState('https://www.rockyrivergolf.com/wp-content/uploads/sites/8088/2021/04/1.png');
+    const [holeImage, setHoleImage] = useState('');
+    const [distance, setDistance] = useState('');
+    const [description, setDescription] = useState('');
+    const [competitionImage, setCompetitionImage] = useState('');
 
     const handleCreation = async () => {
         const combinedDateTime = new Date(date);
         combinedDateTime.setHours(time.getHours());
         combinedDateTime.setMinutes(time.getMinutes());
 
-        if (!title.trim() || !date || !time || holes.length === 0) {
+        if (!title.trim() || !date || !time || holes.length === 0 || !competitionImage.trim() || !description.trim()) {
             Alert.alert("Validation Error", "Please enter all required fields.");
             return;
         }
 
         const formattedDateTime = format(combinedDateTime, 'EEEE, MMMM d, yyyy h:mm a');
 
-        const Competition = {
+        const competition = {
             title,
-            date: formattedDateTime
+            date: formattedDateTime,
+            description,
+            image: competitionImage
         };
 
-        const success = await createNewCompetitionItem(Competition);
+        const success = await createNewCompetitionItem(competition);
 
         if (success) {
             const competitionId = success.id;
@@ -46,92 +50,124 @@ const CreateScreen = ({ navigation }) => {
     };
 
     const addHole = () => {
-        if (!holeNumber || !par) {
-            Alert.alert("Validation Error", "Please enter both hole number and par.");
+        if (!holeNumber || !par || !holeImage.trim() || !distance.trim()) {
+            Alert.alert("Validation Error", "Please enter all required fields for the hole.");
             return;
         }
-        setHoles([...holes, { holeNumber, par, holeImage }]);
+        setHoles([...holes, { holeNumber, par, holeImage, distance }]);
         setHoleNumber('');
         setPar('');
+        setHoleImage('');
+        setDistance('');
     };
 
     const displayFormattedDateTime = format(date, 'EEEE, MMMM d, yyyy') + ' at ' + format(time, 'h:mm a');
 
     return (
         <SafeAreaView>
-            <View style={styles.container}>
-                <TextInput
-                    style={styles.inputField}
-                    placeholder="Competition Title"
-                    onChangeText={newText => setTitle(newText)}
-                    defaultValue={title}
-                />
-
-                <View style={styles.datePickerContainer}>
-                    <Text>Select Date:</Text>
-                    <DateTimePicker
-                        value={date}
-                        mode="date"
-                        display="default"
-                        onChange={(event, selectedDate) => {
-                            const currentDate = selectedDate || date;
-                            setDate(currentDate);
-                        }}
-                    />
-                </View>
-
-                <View style={styles.datePickerContainer}>
-                    <Text>Select Time:</Text>
-                    <DateTimePicker
-                        value={time}
-                        mode="time"
-                        display="default"
-                        onChange={(event, selectedTime) => {
-                            const currentTime = selectedTime || time;
-                            setTime(currentTime);
-                        }}
-                    />
-                </View>
-
-                <Text style={styles.dateTimeDisplay}>
-                    Selected Date and Time: {displayFormattedDateTime}
-                </Text>
-
-                <View style={styles.holeInputContainer}>
+            <ScrollView>
+                <View style={styles.container}>
                     <TextInput
-                        style={styles.holeInput}
-                        placeholder="Hole Number"
-                        keyboardType="numeric"
-                        onChangeText={setHoleNumber}
-                        value={holeNumber}
+                        style={styles.inputField}
+                        placeholder="Competition Title"
+                        onChangeText={newText => setTitle(newText)}
+                        value={title}
                     />
+
                     <TextInput
-                        style={styles.holeInput}
-                        placeholder="Par"
-                        keyboardType="numeric"
-                        onChangeText={setPar}
-                        value={par}
+                        style={styles.inputField}
+                        placeholder="Competition Image URL"
+                        onChangeText={newText => setCompetitionImage(newText)}
+                        value={competitionImage}
                     />
-                    <TouchableOpacity style={styles.addButton} onPress={addHole}>
-                        <Text style={styles.addButtonText}>Add Hole</Text>
+
+                    <View style={styles.datePickerContainer}>
+                        <Text>Select Date:</Text>
+                        <DateTimePicker
+                            value={date}
+                            mode="date"
+                            display="default"
+                            onChange={(event, selectedDate) => {
+                                const currentDate = selectedDate || date;
+                                setDate(currentDate);
+                            }}
+                        />
+                    </View>
+
+                    <View style={styles.datePickerContainer}>
+                        <Text>Select Time:</Text>
+                        <DateTimePicker
+                            value={time}
+                            mode="time"
+                            display="default"
+                            onChange={(event, selectedTime) => {
+                                const currentTime = selectedTime || time;
+                                setTime(currentTime);
+                            }}
+                        />
+                    </View>
+
+                    <Text style={styles.dateTimeDisplay}>
+                        Selected Date and Time: {displayFormattedDateTime}
+                    </Text>
+
+                    <TextInput
+                        style={[styles.inputField, { height: 100 }]}
+                        placeholder="Description"
+                        onChangeText={newText => setDescription(newText)}
+                        value={description}
+                        multiline={true}
+                    />
+
+                    <View style={styles.holeInputContainer}>
+                        <TextInput
+                            style={styles.holeInput}
+                            placeholder="Hole Number"
+                            keyboardType="numeric"
+                            onChangeText={setHoleNumber}
+                            value={holeNumber}
+                        />
+                        <TextInput
+                            style={styles.holeInput}
+                            placeholder="Par"
+                            keyboardType="numeric"
+                            onChangeText={setPar}
+                            value={par}
+                        />
+                        <TextInput
+                            style={styles.holeInput}
+                            placeholder="Distance (yards)"
+                            keyboardType="numeric"
+                            onChangeText={setDistance}
+                            value={distance}
+                        />
+                        <TextInput
+                            style={styles.holeInput}
+                            placeholder="Hole Image URL"
+                            onChangeText={setHoleImage}
+                            value={holeImage}
+                        />
+                        <TouchableOpacity style={styles.addButton} onPress={addHole}>
+                            <Text style={styles.addButtonText}>Add Hole</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <FlatList
+                        data={holes}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item }) => (
+                            <View style={styles.holeListItem}>
+                                <Text>Hole {item.holeNumber}: Par {item.par}, Distance: {item.distance} yards</Text>
+                                <Image source={{ uri: item.holeImage }} style={styles.holeImage} />
+                            </View>
+                        )}
+                    />
+
+                    <TouchableOpacity style={styles.button} onPress={handleCreation}>
+                        <Text style={styles.buttonText}>Create Competition</Text>
                     </TouchableOpacity>
                 </View>
-
-                <FlatList
-                    data={holes}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.holeListItem}>
-                            <Text>Hole {item.holeNumber}: Par {item.par}</Text>
-                            <Image source={{ uri: item.holeImage }} style={styles.holeImage} />
-                        </View>
-                    )}
-                />
-
-                <TouchableOpacity style={styles.button} onPress={handleCreation}>
-                    <Text style={styles.buttonText}>Create Competition</Text>
-                </TouchableOpacity>
-            </View>
+            </ScrollView>
         </SafeAreaView>
     );
 };
@@ -168,21 +204,21 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     holeInputContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
+        flexDirection: 'column',
         marginTop: 20
     },
     holeInput: {
         borderWidth: 1,
         borderColor: 'gray',
         padding: 10,
-        width: '40%'
+        marginVertical: 5
     },
     addButton: {
         backgroundColor: 'blue',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 10
+        padding: 10,
+        marginTop: 10
     },
     addButtonText: {
         color: 'white'

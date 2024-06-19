@@ -28,25 +28,25 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
             const holesData = await getCompetitionHoles(CompetitionId);
             setHoles(holesData);
             const participantIds = await getCompetitionParticipants(CompetitionId);
-    
+
             if (participantIds.includes(currentUser.uid)) {
                 setUserHasJoined(true);
             }
-    
+
             const participantsDetails = await Promise.all(participantIds.map(id => getUserDetails(id)));
             console.log('Participants Details:', participantsDetails);
             setParticipants(participantsDetails);
-    
+
             // Fetch scores and update leaderboard
             const scores = await getScoresForCompetition(CompetitionId);
             const participantScores = calculateParticipantScores(scores, participantsDetails);
             setLeaderboard(participantScores);
-    
+
             setLoading(false);
         };
-    
+
         fetchDetails();
-    
+
         return () => {
             setCompetitionDetails({});
             setHoles([]);
@@ -54,29 +54,29 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
             setUserHasJoined(false);
             setLoading(true);
         };
-    }, [CompetitionId]);    
-    
+    }, [CompetitionId]);
+
 
     const calculateParticipantScores = (scores, participants) => {
         console.log('Scores:', scores);
         console.log('Participants:', participants);
-    
+
         const scoreMap = {};
-    
+
         scores.forEach(({ userId, score }) => {
             if (!scoreMap[userId]) {
                 scoreMap[userId] = 0;
             }
             scoreMap[userId] += score;
         });
-    
+
         console.log('Score Map:', scoreMap);
-    
+
         return participants.map(participant => ({
             ...participant,
             totalScore: scoreMap[participant.id] !== undefined ? scoreMap[participant.id] : 0
         })).sort((a, b) => a.totalScore - b.totalScore);
-    };      
+    };
 
     const handleJoinCompetition = async () => {
         const success = await joinCompetition(CompetitionId, currentUser.uid);
@@ -122,7 +122,7 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                     <View style={styles.detailsContainer}>
                         <Text style={styles.headerHeading}>Details</Text>
                         <Text style={styles.headerSubHeading}>
-                            Nestled amidst the breathtaking vistas of British Columbia's Coast Mountains, Whistler Bike Park stands as a mecca for mountain biking enthusiasts worldwide. Renowned for its unparalleled terrain and adrenaline-pumping trails, this iconic destination beckons riders of all levels to experience the ultimate thrill on two wheels.
+                            {competitionDetails.description}
                         </Text>
                     </View>
 
@@ -153,22 +153,25 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                                 {leaderboard.length > 1 && (
                                     <View style={styles.podiumItem}>
                                         <Text style={styles.podiumText}>{leaderboard[1].username}</Text>
+                                        <Text style={styles.podiumText}>{leaderboard[1].totalScore}</Text>
                                         <View style={[styles.podiumBlock, styles.podiumSecond]} />
-                                        <Text style={styles.podiumScore}>{leaderboard[1].totalScore}</Text>
+                                        
                                     </View>
                                 )}
                                 {leaderboard.length > 0 && (
                                     <View style={styles.podiumItem}>
                                         <Text style={styles.podiumText}>{leaderboard[0].username}</Text>
+                                        <Text style={styles.podiumText}>{leaderboard[0].totalScore}</Text>
                                         <View style={[styles.podiumBlock, styles.podiumFirst]} />
-                                        <Text style={styles.podiumScore}>{leaderboard[0].totalScore}</Text>
+                                        
                                     </View>
                                 )}
                                 {leaderboard.length > 2 && (
                                     <View style={styles.podiumItem}>
                                         <Text style={styles.podiumText}>{leaderboard[2].username}</Text>
+                                        <Text style={styles.podiumText}>{leaderboard[2].totalScore}</Text>
                                         <View style={[styles.podiumBlock, styles.podiumThird]} />
-                                        <Text style={styles.podiumScore}>{leaderboard[2].totalScore}</Text>
+                                        
                                     </View>
                                 )}
                             </View>
@@ -196,7 +199,6 @@ const CompetitionDetailScreen = ({ route, navigation }) => {
                             renderItem={({ item }) => (
                                 <View style={styles.participantItem}>
                                     <Text style={styles.participantName}>{item.username}</Text>
-                                    {/* <Text style={styles.participantName}>{leaderboard.score}</Text> */}
                                 </View>
                             )}
                         />

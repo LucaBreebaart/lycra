@@ -1,9 +1,9 @@
-import { Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, FlatList } from 'react-native'
+import { Pressable, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, ActivityIndicator, FlatList, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import Feather from '@expo/vector-icons/Feather';
-import { getMyCompetitionList } from '../services/DbService';
+import { getCompetitionList } from '../services/DbService';
 import { useFocusEffect } from '@react-navigation/native';
 
 function CompetitionScreen({ navigation }) {
@@ -41,17 +41,17 @@ function CompetitionScreen({ navigation }) {
 
   const handleGettingOfData = async () => {
     setRefreshing(true);
-    const allData = await getMyCompetitionList()
+    const allData = await getCompetitionList()
     setCompetitionItems(allData)
     setRefreshing(false);
   }
 
   return (
-    <SafeAreaView>
+    <ScrollView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.headerHeading}>Competitions</Text>
-          <Text style={styles.headerSubHeading}>[Entered Competitions]</Text>
+          <Text style={styles.headerSubHeading}>[ All Competitions ]</Text>
         </View>
 
         <FlatList
@@ -64,7 +64,7 @@ function CompetitionScreen({ navigation }) {
           ListEmptyComponent={<Text>No Competitions</Text>}
         />
       </View>
-    </SafeAreaView>
+    </ScrollView>
   )
 }
 
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "140%",
     backgroundColor: '#F4FDFD',
-    top: -50,
+    top: -10,
   },
   header: {
     width: '100%',
