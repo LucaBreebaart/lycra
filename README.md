@@ -1,9 +1,9 @@
 <br />
 
-![GitHub repo size](https://github.com/LucaBreebaart/lycra?color=%000000)
-![GitHub watchers](https://github.com/LucaBreebaart/lycra?color=%000000)
-![GitHub language count](hhttps://github.com/LucaBreebaart/lycra?color=%000000)
-![GitHub code size in bytes](https://github.com/LucaBreebaart/lycra?color=%000000)
+![GitHub repo size](https://img.shields.io/github/repo-size/LucaBreebaart/lycra?color=%23000000)
+![GitHub watchers](https://img.shields.io/github/watchers/LucaBreebaart/lycra?color=%23000000)
+![GitHub language count](https://img.shields.io/github/languages/count/LucaBreebaart/lycra?color=%23000000)
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/LucaBreebaart/lycra?color=%23000000)
 
 <!-- HEADER SECTION -->
 <h6 align="center">Luca Breebaart Interactive Development 302</h6>
