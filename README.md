@@ -249,7 +249,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- LICENSE -->
 ## Contact
 
-* **Luca Breebaart** - [luca.breebaart99@gmail.com](mailto:luca.breebaart99@gmail.com) - [@lucabreebaart](https://www.instagram.com/lucabreebaart/) 
+* **Luca Breebaart** - [luca.breebaart99@gmail.com](mailto:luca.breebaart99@gmail.com) - [@lucabreebaart](https://www.instagram.com/luca.breebaart/) 
 * **Project Link** - https://github.com/LucaBreebaart/Lycra 
 
 <!-- ACKNOWLEDGEMENTS -->
