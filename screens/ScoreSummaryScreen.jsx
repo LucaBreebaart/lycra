@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     header2: {
-        fontFamily: 'inter',
+        // fontFamily: 'Inter',
         fontSize: 16,
         fontWeight: 'bold',
     },

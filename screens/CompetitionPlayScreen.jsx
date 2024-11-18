@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
         fontSize: 22,
         marginBottom: 20,
         textAlign: 'center',
-        fontFamily: 'Michroma',
+        // fontFamily: 'Michroma',
         color: 'white',
         width: 300,
     },
@@ -321,7 +321,7 @@ const styles = StyleSheet.create({
     noCompetitionsButtonText: {
         fontSize: 18,
         color: 'white',
-        fontFamily: 'Inter',
+        // fontFamily: 'Inter',
         textAlign: 'center',
     },
 });

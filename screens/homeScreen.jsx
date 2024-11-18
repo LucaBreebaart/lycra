@@ -499,8 +499,8 @@ const styles = StyleSheet.create({
   imageHeading: {
     fontSize: 36,
     color: 'white',
-    fontFamily: 'Michroma',
-    lineHeight: 40,
+    // fontFamily: 'Michroma',
+    // lineHeight: 40,
     overflow: 'visible',
   },
   imageButton: {
@@ -587,8 +587,8 @@ const styles = StyleSheet.create({
   coursesBtnHeading: {
     fontSize: 26,
     color: 'black',
-    fontFamily: 'Michroma',
-    lineHeight: 26,
+    // fontFamily: 'Michroma',
+    // lineHeight: 26,
     overflow: 'visible',
   },
   coursesBtnSubHeading: {
@@ -596,7 +596,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
     color: 'black',
     fontFamily: 'inter',
-    lineHeight: 22,
+    // lineHeight: 22,
     overflow: 'visible',
   },
   discoverContainer: {
@@ -615,8 +615,8 @@ const styles = StyleSheet.create({
   discoverHeading: {
     fontSize: 36,
     color: 'white',
-    fontFamily: 'Michroma',
-    lineHeight: 40,
+    // fontFamily: 'Michroma',
+    // lineHeight: 40,
     overflow: 'visible',
   },
   discoverCourseContainer: {
@@ -636,8 +636,8 @@ const styles = StyleSheet.create({
   discoverCourseHeading: {
     fontSize: 36,
     color: 'white',
-    fontFamily: 'Michroma',
-    lineHeight: 40,
+    // fontFamily: 'Michroma',
+    // lineHeight: 40,
     overflow: 'visible',
   },
   discoverCourseSubHeading: {

@@ -269,12 +269,12 @@ const styles = StyleSheet.create({
     headerHeading: {
         fontSize: 36,
         color: 'white',
-        fontFamily: 'Michroma'
+        // // fontFamily: 'Michroma'
     },
     headerSubHeading: {
         fontSize: 16,
         color: 'white',
-        fontFamily: 'Michroma'
+        // fontFamily: 'Michroma'
     },
     image: {
         width: "100%",
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     detailsHeading: {
         fontSize: 12,
         color: 'white',
-        fontFamily: 'Michroma'
+        // fontFamily: 'Michroma'
     },
     holeContainer: {
         gap: 10,
@@ -340,7 +340,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: 'white',
-        fontFamily: 'Michroma',
+        // fontFamily: 'Michroma',
     },
     participantItem: {
         padding: 10,
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     participantName: {
         fontSize: 18,
         color: 'white',
-        fontFamily: 'Inter',
+        // fontFamily: 'Inter',
         width: '100%',
     },
 
@@ -381,7 +381,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: 'white',
-        fontFamily: 'Michroma',
+        // fontFamily: 'Michroma',
     },
     podiumContainer: {
         flexDirection: 'row',
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
     podiumText: {
         color: 'white',
         fontSize: 18,
-        fontFamily: 'Inter',
+        // fontFamily: 'Inter',
         marginBottom: 5,
     },
     podiumBlock: {
@@ -430,7 +430,7 @@ const styles = StyleSheet.create({
     scoreparticipantName: {
         fontSize: 18,
         color: 'white',
-        fontFamily: 'Inter',
+        // fontFamily: 'Inter',
         width: '100%',
     },
 
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: 'white',
         fontSize: 18,
-        fontFamily: 'Michroma',
+        // fontFamily: 'Michroma',
         textAlign: 'center',
     },
 
